@@ -1,0 +1,175 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  background-color: #ecf0f1;
+  background-color: #2a3950;
+  font-family: Bahnschrift, 'DIN Alternate', 'Franklin Gothic Medium',
+    'Nimbus Sans Narrow', sans-serif-condensed, sans-serif;
+}
+
+a {
+  color: #dceaf7;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+pre {
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas,
+    'DejaVu Sans Mono', monospace;
+}
+
+.app {
+  margin: 0 auto;
+  max-width: 600px;
+}
+
+.error {
+  color: #e59800;
+}
+
+.svg-wrapper {
+  padding: 20px;
+}
+
+svg {
+  display: block;
+  width: 600px;
+  max-width: 100%;
+  overflow: visible;
+}
+
+circle,
+path,
+polygon {
+  transform-box: fill-box;
+  transform-origin: center center;
+  transform: translateZ(0);
+  will-change: transform;
+  /* fill: #9b59b6;
+  fill: #2fcc71;
+  fill: #e74c3c; */
+  /* stroke: rgba(255, 255, 255, 0.5); */
+  fill: #fe2c55;
+  stroke-width: 0.1;
+}
+
+/* ----- DOM poc ----- */
+
+.dom-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.dom-wrapper div {
+  flex: 7% 0 0;
+  aspect-ratio: 1;
+  background: #fe2c55;
+}
+
+/* ----- Controls ----- */
+
+.controls {
+  padding: 20px;
+}
+
+/* ----- Code editor ----- */
+
+.code-editor {
+  width: 100%;
+  height: 100px;
+  position: relative;
+  background: rgba(255, 255, 255, 0.05);
+  color: #eee;
+}
+
+.code-editor__highlighted-code,
+.code-editor__input {
+  width: 100%;
+  height: 100px;
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas,
+    'DejaVu Sans Mono', monospace;
+  font-size: 18px;
+  padding: 12px;
+  border: none;
+  display: block;
+  line-height: 26px;
+  border-radius: 2px;
+}
+
+.code-editor__input {
+  position: absolute;
+  top: 0;
+  color: transparent;
+  background: transparent;
+  caret-color: white;
+  resize: none;
+}
+
+.code-editor__input:focus {
+  outline: 4px solid rgba(255, 255, 255, 0.1);
+}
+
+.code-editor__highlighted-code {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow: hidden;
+}
+
+.code-editor__highlighted-code i {
+  font-style: normal;
+}
+
+i.quotes {
+  color: #e2d872;
+}
+i.declaration {
+  color: #64d5ea;
+}
+i.fn {
+  color: #a7e22e;
+}
+i.parenthesis {
+  color: #fed703;
+}
+i.squared {
+  color: #5fe8e8;
+}
+i.curly {
+  color: #da70d6;
+}
+i.number {
+  color: #9f77e7;
+}
+i.logic {
+  color: #f92572;
+}
+i.equals {
+  color: #5fe8e8;
+}
+i.comments {
+  color: #789;
+  font-style: italic;
+}
+i.comments > * {
+  color: inherit;
+}
