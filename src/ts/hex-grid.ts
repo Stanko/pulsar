@@ -3,13 +3,15 @@ import { Polygon } from './types';
 const HEX_SCALE = 0.85;
 const SCALE = 1.1; // Scale to fit the grid into the SVG bounds
 
+const SCALE_GLOBAL = 100;
+
 export function generateHexGrid(
   columnsCount: number,
   rowsCount: number
 ): Polygon[] {
   const points: Polygon[] = [];
 
-  const innerRadius = 0.5 * SCALE; // height of the each of the six triangles in hexagon
+  const innerRadius = 50 * SCALE; // height of the each of the six triangles in hexagon
   const outerRadius = (2 * innerRadius) / Math.sqrt(3); // side of the hexagon and each of the six triangles in it
 
   const horizontalStep = innerRadius * 2;

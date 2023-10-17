@@ -70,6 +70,7 @@ polygon {
   /* stroke: rgba(255, 255, 255, 0.5); */
   fill: #fe2c55;
   stroke-width: 0.1;
+  perspective-origin: center center;
 }
 
 /* ----- DOM poc ----- */

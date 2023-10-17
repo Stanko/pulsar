@@ -85,7 +85,13 @@ function draw() {
       timeSinceLastRestart
     );
     // point.$element.style.opacity = value.toFixed(3);
-    point.$element.style.transform = `scale(${value.toFixed(3)})`;
+    // point.$element.style.transform = `scale(${value.toFixed(3)})`;
+    let z = (1 - 1 / value) * 100;
+
+    point.$element.style.transform = `perspective(100px) translateZ(${z.toFixed(
+      2
+    )}px)`;
+    point.$element.setAttribute('data-value', value.toFixed(2));
   });
 
   raf = requestAnimationFrame(draw);
