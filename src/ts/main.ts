@@ -1,18 +1,19 @@
-import '../css/style.css';
-import { generateHexGrid } from './hex-grid';
-import { generateRectangularGrid } from './rectangular-grid';
+import '../css/style.scss';
+// import { generateHexGrid } from './svg-grids/hex';
 
 import './eval';
-import { getPointValue } from './eval';
-import { generateTriangleGrid } from './triangle-grid';
-import { Polygon, Circle } from './types';
+import { calculateGrid, worker } from './eval';
+import { generateTriangleGrid } from './grids/triangles';
+import { Pixel } from './utils/types';
 
 import './code-editor';
-// import { generateRectangularGridDOM } from './rectangular-grid-dom';
+import { generateCirclesGrid } from './grids/circles';
 
 // ----- Init ----- //
 
-const $svg = document.querySelector('svg') as SVGElement;
+const $animationWrapper = document.querySelector(
+  '.animation-wrapper'
+) as HTMLDivElement;
 
 function updateGrid() {
   const gridVariants = ['#classic', '#hex', '#triangle'];
@@ -22,40 +23,15 @@ function updateGrid() {
     ? hash.replace('#', '')
     : 'classic';
 
-  const map: Record<string, () => (Polygon | Circle)[]> = {
-    classic: () => generateRectangularGrid(6),
-    // classic: () => generateRectangularGridDOM(6),
-    hex: () => generateHexGrid(5, 6),
+  const map: Record<string, () => Pixel[]> = {
+    classic: () => generateCirclesGrid(6),
+    // hex: () => generateHexGrid(5, 6),
     triangle: () => generateTriangleGrid(8, 5),
   };
 
   const grid = map[variant]();
 
-  const colors = [
-    '#ff9500',
-    '#ffcc02',
-    '#35c759',
-    '#5bc7fa',
-    '#007aff',
-    '#5856d7',
-    '#af52de',
-    '#ff2c55',
-  ];
-
-  grid.forEach((point) => {
-    // point.$element.style.opacity = 0.5 + Math.random() * 0.5 + '';
-    // point.$element.style.fill =
-    //   colors[Math.floor(Math.random() * colors.length)];
-    const d = Math.sqrt(Math.pow(point.x, 2) + Math.pow(point.y, 2));
-
-    point.$element.style.fill = colors[Math.floor(d)];
-    // point.$element.style.background = colors[Math.floor(d)];
-  });
-
-  $svg.replaceChildren(...grid.map((point) => point.$element));
-  // document
-  //   .querySelector('.dom-wrapper')
-  //   .replaceChildren(...grid.map((point) => point.$element));
+  $animationWrapper.replaceChildren(...grid.map((point) => point.$element));
 
   return grid;
 }
@@ -68,27 +44,71 @@ window.addEventListener('hashchange', () => {
 
 // ----- Animation Loop ----- //
 
-const speed = 500;
-const scale = 2;
+const speed = 300;
+// const scale = 2;
 let animationTime = 0;
 let lastRestart = Date.now();
 let timeSinceLastRestart = 0;
 let raf: number;
 
-function draw() {
-  timeSinceLastRestart = animationTime + (Date.now() - lastRestart) / speed;
+// ----- Worker ----- //
 
-  grid.forEach((point) => {
-    const value = getPointValue(
-      point.x / scale,
-      point.y / scale,
-      timeSinceLastRestart
-    );
-    // point.$element.style.opacity = value.toFixed(3);
-    point.$element.style.transform = `scale(${value.toFixed(3)})`;
+let frameStart: number;
+let frameSum: number = 0;
+let frameCount: number = 0;
+
+worker.addEventListener('message', (e) => {
+  e.data.forEach((value: number, index: number) => {
+    const point = grid[index];
+    // point.$element.style.transform = `scale(${value.toFixed(3)}) translateZ(0)`;
+    // point.$element.style.transform = `translate3d(${point.x * 100}%, ${
+    //   point.y * 100
+    // }%, 0) scale(${value.toFixed(3)})`;
+    // point.$element.style.transform = ` translate3d(${
+    //   point.x * 100
+    // }%, ${point.y * 100}%, ${(value * 30).toFixed(3)}px)`;
+
+    let z = (1 - 1 / value) * 100;
+
+    point.$element.style.transform = `perspective(100px) translateZ(${z.toFixed(
+      2
+    )}px)`;
+    point.$element.setAttribute('data-value', value.toFixed(2));
   });
+  const frameDuration = Date.now() - frameStart;
+  frameSum += frameDuration;
+  frameCount++;
 
-  raf = requestAnimationFrame(draw);
+  if (frameCount % 100 === 0) {
+    console.log(frameSum / 100);
+    frameSum = 0;
+    frameCount = 0;
+  }
+
+  if (isPlaying) {
+    raf = requestAnimationFrame(() => draw());
+  }
+});
+
+function draw(fakeStep = 0) {
+  if (fakeStep !== 0) {
+    timeSinceLastRestart += fakeStep;
+  } else {
+    timeSinceLastRestart = animationTime + (Date.now() - lastRestart) / speed;
+  }
+
+  frameStart = Date.now();
+  calculateGrid(grid, timeSinceLastRestart);
+  // grid.forEach((point) => {
+  //   const value = getPointValue(
+  //     point.x / scale,
+  //     point.y / scale,
+  //     timeSinceLastRestart
+  //   );
+
+  //   // point.$element.style.opacity = value.toFixed(3);
+  //   point.$element.style.transform = `scale(${value.toFixed(3)})`;
+  // });
 }
 
 // ----- Animation controls ----- //
@@ -96,6 +116,10 @@ function draw() {
 let isPlaying = false;
 
 const $playPause = document.querySelector('.play-pause') as HTMLButtonElement;
+const $stepBack = document.querySelector('.step-back') as HTMLButtonElement;
+const $stepForward = document.querySelector(
+  '.step-forward'
+) as HTMLButtonElement;
 
 $playPause.addEventListener('click', () => {
   isPlaying = !isPlaying;
@@ -107,6 +131,18 @@ $playPause.addEventListener('click', () => {
     cancelAnimationFrame(raf);
     animationTime = timeSinceLastRestart;
   }
+});
+
+$stepBack.addEventListener('click', () => {
+  isPlaying = false;
+  cancelAnimationFrame(raf);
+  draw(-0.1);
+});
+
+$stepForward.addEventListener('click', () => {
+  isPlaying = false;
+  cancelAnimationFrame(raf);
+  draw(0.1);
 });
 
 // ----- Start ----- //

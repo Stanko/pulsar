@@ -19,4 +19,21 @@ export type Circle = {
   $element: SVGCircleElement;
 };
 
+export type WorkerData = {
+  grid: Point[];
+  t: number;
+  userCode: string;
+};
+
+export type Pixel = {
+  x: number;
+  y: number;
+  $element: SVGElement;
+};
+
 export type GetPointValue = (x: number, y: number, t: number) => number;
+
+export type SVGOptions = {
+  width: number;
+  height: number;
+};

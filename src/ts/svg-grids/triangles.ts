@@ -1,4 +1,4 @@
-import { Polygon } from './types';
+import { Polygon } from '../utils/types';
 
 const TRIANGLE_SCALE = 0.78;
 const SCALE = 1.35; // Scale to fit the grid into the SVG bounds

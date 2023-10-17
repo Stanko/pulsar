@@ -1,8 +1,8 @@
-import { GetPointValue } from './types';
+import { Pixel } from './utils/types';
 
-// ----- CONSTANTS ----- //
+export const worker = new Worker(new URL('./worker.ts', import.meta.url));
 
-const MAXIMUM_VALUE = 1;
+// ----- Constants ----- //
 
 const forbiddenWords = [
   'fetch',
@@ -37,6 +37,9 @@ const forbiddenWords = [
   'async',
   'WebSocket',
   'Worker',
+  'postMessage',
+  'importScripts',
+  'URL',
 ];
 
 // ----- DOM ----- //
@@ -55,14 +58,12 @@ function showError(text: string) {
 
 // ----- Handlers ----- //
 
-export let userFunction: GetPointValue;
+const DEFAULT_CODE = '(Math.sin(Math.abs(x) + Math.abs(y) + t) + 1) / 2';
 
-function defaultFunction(x: number, y: number, t: number) {
-  return (Math.sin(Math.abs(x) + Math.abs(y) + t) + 1) / 2;
-}
+let userCode = DEFAULT_CODE;
 
 function setUserFunction() {
-  let userCode = $codeEditor.value;
+  userCode = $codeEditor.value;
 
   try {
     for (const word of forbiddenWords) {
@@ -71,16 +72,9 @@ function setUserFunction() {
       }
     }
 
-    userFunction = new Function(
-      'x',
-      'y',
-      't',
-      `"use strict"; return ${userCode};`
-    ) as GetPointValue;
-
     $error.innerHTML = '';
   } catch (e) {
-    userFunction = defaultFunction;
+    userCode = DEFAULT_CODE;
     showError((e as any).toString());
   }
 }
@@ -89,21 +83,14 @@ $codeEditor.addEventListener('input', setUserFunction);
 
 setUserFunction();
 
-export function getPointValue(x: number, y: number, t: number) {
-  let value = 0;
+// ----- Worker ----- //
 
-  try {
-    value = userFunction(x, y, t);
-    // $error.innerHTML = '';
-
-    if (typeof value !== 'number') {
-      throw new Error('Return value is not a number');
-    }
-  } catch (e) {
-    value = defaultFunction(x, y, t);
-
-    showError((e as any).toString());
-  }
-
-  return Math.max(Math.min(value, MAXIMUM_VALUE), 0);
+export function calculateGrid(grid: Pixel[], t: number) {
+  worker.postMessage({
+    grid: grid.map(({ x, y }) => {
+      return { x, y };
+    }),
+    t,
+    userCode,
+  });
 }

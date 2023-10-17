@@ -1,4 +1,4 @@
-import { Circle } from './types';
+import { Circle } from '../utils/types';
 
 const CIRCLE_SCALE = 0.88;
 const RADIUS = 0.5 * CIRCLE_SCALE;

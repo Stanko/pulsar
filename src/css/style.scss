@@ -1,3 +1,5 @@
+@use 'sass:math';
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -46,44 +48,48 @@ pre {
   color: #e59800;
 }
 
-.svg-wrapper {
-  padding: 20px;
-}
-
-svg {
-  display: block;
-  width: 600px;
-  max-width: 100%;
-  overflow: visible;
-}
-
-circle,
-path,
-polygon {
-  transform-box: fill-box;
-  transform-origin: center center;
-  transform: translateZ(0);
-  will-change: transform;
-  /* fill: #9b59b6;
-  fill: #2fcc71;
-  fill: #e74c3c; */
-  /* stroke: rgba(255, 255, 255, 0.5); */
-  fill: #fe2c55;
-  stroke-width: 0.1;
-}
-
 /* ----- DOM poc ----- */
 
-.dom-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
+$pixel-size: 20px;
+
+.animation-wrapper {
+  // width: 100%;
+
+  // width: math.div(100%,13);
+  width: $pixel-size;
+  aspect-ratio: 1;
+  position: relative;
+  outline: 1px solid #ddd;
+  transform-origin: center center;
+
+  margin: 140px;
 }
 
-.dom-wrapper div {
-  flex: 7% 0 0;
-  aspect-ratio: 1;
-  background: #fe2c55;
+.animation-wrapper,
+.animation-wrapper * {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.animation-wrapper svg {
+  position: absolute;
+  display: block;
+  overflow: visible;
+
+  width: $pixel-size;
+  height: $pixel-size;
+}
+
+.animation-wrapper .circle {
+  // width: math.div(100%, 13);
+  // height: auto;
+}
+
+.animation-wrapper .triangle {
+  // width: math.div(100%, 13);
+  // height: auto;
+  // height: math.div(100%, 13);
 }
 
 /* ----- Controls ----- */
