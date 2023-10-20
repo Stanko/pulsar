@@ -19,8 +19,8 @@
 }
 
 body {
-  background-color: #ecf0f1;
-  background-color: #2a3950;
+  background-color: #1e2c3a;
+  color: #eee;
   font-family: Bahnschrift, 'DIN Alternate', 'Franklin Gothic Medium',
     'Nimbus Sans Narrow', sans-serif-condensed, sans-serif;
 }
@@ -41,68 +41,70 @@ pre {
 
 .app {
   margin: 0 auto;
-  max-width: 600px;
+  max-width: 800px;
+  padding: 20px;
 }
 
 .error {
   color: #e59800;
 }
 
-/* ----- DOM poc ----- */
+// svg {
+//   border-radius: 50%;
+//   outline: 1px solid rgba(255, 255, 255, 0.4);
+// }
 
-$pixel-size: 20px;
+// div {
+//   outline: 1px solid rgba(255, 255, 255, 0.4);
+// }
 
-.animation-wrapper {
-  // width: 100%;
+/* ----- Animation ----- */
 
-  // width: math.div(100%,13);
-  width: $pixel-size;
+$pixel-size: 7.5%;
+
+.animation {
+  max-width: 400px;
+  margin: 0 auto;
+  width: 100%;
   aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pixel-wrapper {
+  width: $pixel-size;
+  height: $pixel-size;
   position: relative;
-  outline: 1px solid #ddd;
-  transform-origin: center center;
-
-  margin: 140px;
 }
 
-.animation-wrapper,
-.animation-wrapper * {
-  will-change: transform;
-  backface-visibility: hidden;
-  transform: translateZ(0);
+.pixel-wrapper[data-variant='triangular'] {
+  width: 10%;
+  height: 10%;
 }
 
-.animation-wrapper svg {
+.pixel-wrapper svg {
   position: absolute;
   display: block;
   overflow: visible;
 
-  width: $pixel-size;
-  height: $pixel-size;
-}
+  will-change: transform;
+  // backface-visibility: hidden;
+  // transform: translateZ(0);
 
-.animation-wrapper .circle {
-  // width: math.div(100%, 13);
-  // height: auto;
+  width: 100%;
+  height: 100%;
 }
-
-.animation-wrapper .triangle {
-  // width: math.div(100%, 13);
-  // height: auto;
-  // height: math.div(100%, 13);
-}
-
 /* ----- Controls ----- */
 
 .controls {
-  padding: 20px;
 }
 
 /* ----- Code editor ----- */
 
 .code-editor {
   width: 100%;
-  height: 100px;
+  height: 120px;
   position: relative;
   background: rgba(255, 255, 255, 0.05);
   color: #eee;
@@ -111,7 +113,7 @@ $pixel-size: 20px;
 .code-editor__highlighted-code,
 .code-editor__input {
   width: 100%;
-  height: 100px;
+  height: 100%;
   font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas,
     'DejaVu Sans Mono', monospace;
   font-size: 18px;

@@ -10,24 +10,59 @@
 
 <body>
   <div class="app">
-    <div class="animation-wrapper"></div>
+    <div class="animation">
+      <div class="pixel-wrapper"></div>
+    </div>
     <div class="controls">
-      <div class="type">
-        <a href="#classic">classic</a> <a href="#hex">hex</a> <a href="#triangle">triangle</a>
+      <div class="control control--radio control--grid">
+        <label>
+          <input type="radio" name="grid" value="classic" />
+          <span class="label">Classic</span>
+        </label>
+        <label>
+          <input type="radio" name="grid" value="hex" />
+          <span class="label">Hex</span>
+        </label>
+        <label>
+          <input type="radio" name="grid" value="triangular" />
+          <span class="label">Triangular</span>
+        </label>
       </div>
+
+      <div class="control control--radio">
+        <label>
+          <input type="radio" name="animate" value="scale" />
+          <span class="label">Scale</span>
+        </label>
+        <label>
+          <input type="radio" name="animate" value="opacity" />
+          <span class="label">Opacity</span>
+        </label>
+        <label>
+          <input type="radio" name="animate" value="both" />
+          <span class="label">Both</span>
+        </label>
+      </div>
+
       <button class="play-pause">Play/pause</button>
       <button class="step-back">Step back</button>
       <button class="step-forward">Step forward</button>
+
+      <div class="control control--range">
+        <label>
+          <span class="label">Speed</span>
+          <input type="range" min="10" max="30" step="5" name="speed" />
+        </label>
+      </div>
+
       <div class="code-editor">
-        <pre class="code-editor__highlighted-code"
-          aria-hidden="true">(Math.cos(Math.sqrt(x * x + y * y) - t) + 1) / 2</pre>
-        <textarea class="code-editor__input"
-          spellcheck="false">(Math.cos(Math.sqrt(x * x + y * y) - t) + 1) / 2</textarea>
+        <pre class="code-editor__highlighted-code" aria-hidden="true"></pre>
+        <textarea maxlength="120" name="code" class="code-editor__input" spellcheck="false"></textarea>
       </div>
       <pre class="error"></pre>
     </div>
   </div>
-  <script type="module" src="/ts/main.ts"></script>
+  <script type="module" src="/ts/app.ts"></script>
 </body>
 
 </html>

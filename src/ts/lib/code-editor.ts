@@ -1,7 +1,7 @@
 const $code = document.querySelector(
   '.code-editor__highlighted-code'
 ) as HTMLPreElement;
-const $input = document.querySelector(
+export const $codeEditor = document.querySelector(
   '.code-editor__input'
 ) as HTMLTextAreaElement;
 
@@ -20,7 +20,7 @@ const tokens = {
 };
 
 function highlightCode() {
-  let code = $input.value;
+  let code = $codeEditor.value;
 
   for (const [key, token] of Object.entries(tokens)) {
     code = code.replace(token, `<i class="${key}">$1</i>`);
@@ -29,28 +29,33 @@ function highlightCode() {
   $code.innerHTML = code;
 }
 
-$input.addEventListener('input', () => {
+$codeEditor.addEventListener('input', () => {
+  highlightCode();
+});
+$codeEditor.addEventListener('change', () => {
   highlightCode();
 });
 
-$input.addEventListener('scroll', () => {
-  $code.scrollTop = $input.scrollTop;
+$codeEditor.addEventListener('scroll', () => {
+  $code.scrollTop = $codeEditor.scrollTop;
 });
 
-$input.addEventListener('keydown', (e) => {
+$codeEditor.addEventListener('keydown', (e) => {
   if (e.key == 'Tab') {
     e.preventDefault();
 
-    const start = $input.selectionStart;
-    const end = $input.selectionEnd;
+    const start = $codeEditor.selectionStart;
+    const end = $codeEditor.selectionEnd;
     const tab = '  ';
 
     // set textarea value to: text before caret + tab + text after caret
-    $input.value =
-      $input.value.substring(0, start) + tab + $input.value.substring(end);
+    $codeEditor.value =
+      $codeEditor.value.substring(0, start) +
+      tab +
+      $codeEditor.value.substring(end);
 
     // put caret at right position again
-    $input.selectionStart = $input.selectionEnd = start + tab.length;
+    $codeEditor.selectionStart = $codeEditor.selectionEnd = start + tab.length;
 
     highlightCode();
   }

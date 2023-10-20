@@ -1,4 +1,5 @@
-import { Pixel } from './utils/types';
+import { $codeEditor } from './code-editor';
+import { Pixel } from './types';
 
 export const worker = new Worker(new URL('./worker.ts', import.meta.url));
 
@@ -43,10 +44,6 @@ const forbiddenWords = [
 ];
 
 // ----- DOM ----- //
-
-const $codeEditor = document.querySelector(
-  '.code-editor__input'
-) as HTMLTextAreaElement;
 
 const $error = document.querySelector('.error') as HTMLPreElement;
 

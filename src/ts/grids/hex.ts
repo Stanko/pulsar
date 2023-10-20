@@ -2,61 +2,55 @@ import { Pixel } from '../lib/types';
 import { polygon, create } from '../lib/svg';
 import { getColor } from '../lib/colors';
 
-const TRIANGLE_SCALE = 0.8;
+const HEX_SCALE = 0.85;
+const SCALE = 1.1; // Scale to fit the grid into the SVG bounds
 
-export function generateTriangleGrid(
+export function generateHexGrid(
   columnsCount: number,
   rowsCount: number
 ): Pixel[] {
   const points: Pixel[] = [];
 
-  const side = 1;
-  const h = (side * Math.sqrt(3)) / 2;
-  const r = (h / 3) * 2;
+  const innerRadius = 0.5 * SCALE; // height of the each of the six triangles in hexagon
+  const outerRadius = (2 * innerRadius) / Math.sqrt(3); // side of the hexagon and each of the six triangles in it
 
-  const horizontalStep = side / 2;
-  const verticalStep = h;
+  const horizontalStep = innerRadius * 2;
+  const verticalStep = outerRadius * 1.5;
 
+  const DEG_60 = Math.PI / 3;
   const DEG_30 = Math.PI / 6;
-  const DEG_120 = DEG_30 * 4;
 
   for (let rowIndex = -rowsCount; rowIndex <= rowsCount; rowIndex += 1) {
     const y = rowIndex * verticalStep;
 
     const isOddRow = rowIndex % 2 !== 0;
-    const horizontalOffset = isOddRow ? horizontalStep : 0;
+    const horizontalOffset = isOddRow ? innerRadius : 0;
 
-    const startOffset = isOddRow ? 2 : 1;
-    const endOffset = isOddRow ? 0 : 1;
+    const startOffset = isOddRow ? 1 : 0;
 
     for (
       let columnIndex = -columnsCount - startOffset;
-      columnIndex <= columnsCount + endOffset;
+      columnIndex <= columnsCount;
       columnIndex += 1
     ) {
       const x = columnIndex * horizontalStep + horizontalOffset;
 
-      const isOddColumn = columnIndex % 2 !== 0;
-      const angleOffset = isOddColumn ? Math.PI : 0;
-
-      const yLocal = isOddColumn ? h / 3 : 0;
-
-      const path = [0, 1, 2].map((index) => {
-        const angle = index * DEG_120 + DEG_30 + angleOffset;
+      const path = [0, 1, 2, 3, 4, 5].map((index) => {
+        const angle = index * DEG_60 + DEG_30;
         return {
-          x: 0.5 + r * TRIANGLE_SCALE * Math.cos(angle),
-          y: 0.5 + r * TRIANGLE_SCALE * Math.sin(angle),
+          x: 0.5 + outerRadius * HEX_SCALE * Math.cos(angle),
+          y: 0.5 + outerRadius * HEX_SCALE * Math.sin(angle),
         };
       });
 
       const $element = create({ width: 1, height: 1 });
-      const $polygon = polygon(path, { fill: getColor({ x, y: y + yLocal }) });
+      const $polygon = polygon(path, { fill: getColor({ x, y }) });
 
       $element.classList.add('triangle');
       $element.appendChild($polygon);
 
       $element.style.left = `${(x * 100).toFixed(2)}%`;
-      $element.style.top = `${((y + yLocal) * -100).toFixed(2)}%`; // SVG uses inverted Y axis
+      $element.style.top = `${(-y * 100).toFixed(2)}%`; // SVG uses inverted Y axis
 
       points.push({ x, y, $element });
 
@@ -72,7 +66,7 @@ export function generateTriangleGrid(
 
       // points.push({
       //   x,
-      //   y: yLocal,
+      //   y,
       //   polygon,
       //   $element,
       // });

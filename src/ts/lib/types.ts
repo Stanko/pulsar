@@ -37,3 +37,7 @@ export type SVGOptions = {
   width: number;
   height: number;
 };
+
+export type GridType = 'classic' | 'hex' | 'triangular';
+
+export type Params = Record<string, any>;

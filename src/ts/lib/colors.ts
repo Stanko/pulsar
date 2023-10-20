@@ -1,5 +1,6 @@
 import { Point } from './types';
 
+// https://miro.medium.com/v2/resize:fit:5600/1*_4oYdLn-kt6nq9D1_Jyo-A.png
 export const colors = [
   '#ff9500',
   '#ffcc02',
