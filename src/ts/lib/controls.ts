@@ -1,18 +1,42 @@
 import { Params } from './types';
 
+// ----- Autoplay ----- //
+
+const AUTOPLAY_KEY = 'pulsar:autoplay';
+export const $autoplay = document.querySelector(
+  'input[name=autoplay]'
+) as HTMLInputElement;
+$autoplay.checked = localStorage.getItem(AUTOPLAY_KEY) === 'true';
+
+$autoplay.addEventListener('change', () => {
+  localStorage.setItem(AUTOPLAY_KEY, $autoplay.checked.toString());
+});
+
+// ----- Params ----- //
+
 const $inputs = [
   ...document.querySelectorAll('.control input, .code-editor__input'),
 ] as HTMLInputElement[];
 
 const gridTypes = ['classic', 'hex', 'triangular'];
 const animateTypes = ['both', 'scale', 'opacity'];
+
 export const CODE_MAX_LENGTH = 120;
+
+const examples = [
+  '(Math.cos(x * t / 5) + Math.sin(y * t / 5)) / 2',
+  '(Math.cos(Math.sqrt(x * x + y * y) - t) + 1) / 2',
+  '(Math.cos(Math.sin(x * y) + t * 0.66) + 1) / 2',
+  '((Math.cos(t + x + Math.cos(t)) + Math.sin(t + y)) + 2) / 4',
+  'Math.sqrt(x*x + y*y) > (Math.cos(x + t) + 1) / 2 * 5  ? noise(x + t, y + t) * 0.3 : 1',
+  'Math.cos(x + t) > y * 0.3 + 0.5 ? (Math.cos(x + t) + 1) / 4 + 0.5 : 0', // 'Math.cos(x + t) > y * 0.3 + 0.5 ? 0.8 : 0',
+];
 
 const DEFAULT_PARAMS: Params = {
   grid: 'classic',
   animate: 'scale',
-  speed: 20,
-  code: '(Math.cos(x * t / 5) + Math.sin(y * t / 5)) / 2',
+  speed: 1,
+  code: examples[Math.floor(Math.random() * examples.length)],
 };
 
 export const PARAMS = [
@@ -38,8 +62,8 @@ export const PARAMS = [
     name: 'speed',
     validate: (value: string) => {
       const intValue = parseInt(value, 10);
-      const MIN = 10;
-      const MAX = 30;
+      const MIN = 1;
+      const MAX = 9;
 
       if (intValue >= MIN && intValue <= MAX) {
         return intValue;

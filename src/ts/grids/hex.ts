@@ -2,8 +2,9 @@ import { Pixel } from '../lib/types';
 import { polygon, create } from '../lib/svg';
 import { getColor } from '../lib/colors';
 
-const HEX_SCALE = 0.85;
 const SCALE = 1.1; // Scale to fit the grid into the SVG bounds
+const SVG_SIZE = 100;
+const HEX_SCALE = SVG_SIZE * 0.85;
 
 export function generateHexGrid(
   columnsCount: number,
@@ -38,15 +39,15 @@ export function generateHexGrid(
       const path = [0, 1, 2, 3, 4, 5].map((index) => {
         const angle = index * DEG_60 + DEG_30;
         return {
-          x: 0.5 + outerRadius * HEX_SCALE * Math.cos(angle),
-          y: 0.5 + outerRadius * HEX_SCALE * Math.sin(angle),
+          x: SVG_SIZE * 0.5 + outerRadius * HEX_SCALE * Math.cos(angle),
+          y: SVG_SIZE * 0.5 + outerRadius * HEX_SCALE * Math.sin(angle),
         };
       });
 
-      const $element = create({ width: 1, height: 1 });
+      const $element = create({ width: SVG_SIZE, height: SVG_SIZE });
       const $polygon = polygon(path, { fill: getColor({ x, y }) });
 
-      $element.classList.add('triangle');
+      $element.classList.add('hex');
       $element.appendChild($polygon);
 
       $element.style.left = `${(x * 100).toFixed(2)}%`;

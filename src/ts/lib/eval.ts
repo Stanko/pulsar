@@ -49,8 +49,12 @@ const $error = document.querySelector('.error') as HTMLPreElement;
 
 // ----- Helpers ----- //
 
-function showError(text: string) {
+export function showError(text: string) {
   $error.innerHTML = text;
+}
+
+export function hideError() {
+  $error.innerHTML = '';
 }
 
 // ----- Handlers ----- //
@@ -69,9 +73,9 @@ function setUserFunction() {
       }
     }
 
-    $error.innerHTML = '';
+    hideError();
   } catch (e) {
-    userCode = DEFAULT_CODE;
+    // userCode = DEFAULT_CODE;
     showError((e as any).toString());
   }
 }
@@ -82,12 +86,30 @@ setUserFunction();
 
 // ----- Worker ----- //
 
-export function calculateGrid(grid: Pixel[], t: number) {
-  worker.postMessage({
-    grid: grid.map(({ x, y }) => {
-      return { x, y };
-    }),
-    t,
-    userCode,
+let callback: (e: MessageEvent<any>) => void;
+let resolveMethod: () => void;
+
+worker.addEventListener('message', (e) => {
+  callback(e);
+  resolveMethod();
+});
+
+export async function calculateGrid(
+  grid: Pixel[],
+  t: number,
+  userCallback: (e: MessageEvent<any>) => void
+) {
+  callback = userCallback;
+
+  return new Promise<void>((resolve) => {
+    resolveMethod = resolve;
+
+    worker.postMessage({
+      grid: grid.map(({ x, y }) => {
+        return { x, y };
+      }),
+      t,
+      userCode,
+    });
   });
 }

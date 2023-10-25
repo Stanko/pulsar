@@ -5,19 +5,24 @@ Micro creative coding playground.
 ## TODO
 
 - [ ] Errors
-- [ ] Resume on code change
-- [ ] Resume on grid change
+- [x] Resume on code change
+- [x] Resume on grid change
+- [ ] Update paused image on "opacity / size / both"
 - [ ] Controls
-  - [ ] Play / pause
-  - [ ] Shape selection (classic / hex / triangle)
-  - [ ] Animate opacity / size / both
-  - [ ] Autoplay (use reduce motion flag as default)
-  - [ ] Speed
+  - [x] Play / pause
+  - [x] Shape selection (classic / hex / triangle)
+  - [x] Animate opacity / size / both
+  - [x] Autoplay (use reduce motion flag as default)
+  - [x] Speed
 - [ ] Debug
   - [ ] Step forward/back
-  - [ ] FPS
-- [ ] URL params
-  - [ ] Code
-  - [ ] Shape
-  - [ ] Animation properties
-  - [ ] Speed
+  - [x] FPS logs
+- [x] URL params
+  - [x] Code
+  - [x] Shape
+  - [x] Animation properties
+  - [x] Speed
+
+## Similar things:
+
+- https://sliderland.blinry.org/

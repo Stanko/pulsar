@@ -31,7 +31,12 @@ export type Pixel = {
   $element: SVGElement;
 };
 
-export type GetPointValue = (x: number, y: number, t: number) => number;
+export type GetPointValue = (
+  x: number,
+  y: number,
+  t: number,
+  noise: (x: number, y: number) => number
+) => number;
 
 export type SVGOptions = {
   width: number;

@@ -5,14 +5,15 @@ export const $codeEditor = document.querySelector(
   '.code-editor__input'
 ) as HTMLTextAreaElement;
 
+// Highlighting code is taken from this
 const tokens = {
   equals: /(\b=\b)/g,
   quotes: /((&#39;.*?&#39;)|(&#34;.*?&#34;)|(".*?(?<!\\)")|('.*?(?<!\\)')|`)/g,
   comments: /((\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/)|(\/\/.*))/g,
   logic:
     /(%=|%|\-|\+|\*|&amp;{1,2}|\|{1,2}|&lt;=|&gt;=|&lt;|&gt;|!={1,2}|={2,3})/g,
+  fn: /(?<=^|\s*)(noise|async|await|console|alert|Math|Object|Array|String|class(?!\s*\=)|function)(?=\b)/g,
   number: /(\d+(\.\d+)?(e\d+)?)/g,
-  fn: /(?<=^|\s*)(async|await|console|alert|Math|Object|Array|String|class(?!\s*\=)|function)(?=\b)/g,
   declaration: /(?<=^|\s*)(var|let|const)/g,
   parenthesis: /(\(|\))/g,
   squared: /(\[|\])/g,
@@ -29,35 +30,16 @@ function highlightCode() {
   $code.innerHTML = code;
 }
 
-$codeEditor.addEventListener('input', () => {
-  highlightCode();
-});
-$codeEditor.addEventListener('change', () => {
-  highlightCode();
-});
+$codeEditor.addEventListener('input', highlightCode);
+$codeEditor.addEventListener('change', highlightCode);
 
 $codeEditor.addEventListener('scroll', () => {
   $code.scrollTop = $codeEditor.scrollTop;
 });
 
 $codeEditor.addEventListener('keydown', (e) => {
-  if (e.key == 'Tab') {
+  if (e.key == 'Enter') {
     e.preventDefault();
-
-    const start = $codeEditor.selectionStart;
-    const end = $codeEditor.selectionEnd;
-    const tab = '  ';
-
-    // set textarea value to: text before caret + tab + text after caret
-    $codeEditor.value =
-      $codeEditor.value.substring(0, start) +
-      tab +
-      $codeEditor.value.substring(end);
-
-    // put caret at right position again
-    $codeEditor.selectionStart = $codeEditor.selectionEnd = start + tab.length;
-
-    highlightCode();
   }
 });
 

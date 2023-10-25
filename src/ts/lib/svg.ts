@@ -7,6 +7,9 @@ export function create(options: SVGOptions): SVGElement {
   $svg.setAttribute('width', `${options.width}`);
   $svg.setAttribute('height', `${options.height}`);
 
+  // Opacity will be set in animation loop
+  $svg.style.opacity = '0';
+
   return $svg;
 }
 

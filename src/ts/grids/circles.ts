@@ -5,7 +5,7 @@ import { getColor } from '../lib/colors';
 const CIRCLE_SCALE = 0.88;
 const RADIUS = 0.5 * CIRCLE_SCALE;
 
-const SVG_SIZE = 1;
+const SVG_SIZE = 100;
 
 export function generateCirclesGrid(size: number): Pixel[] {
   const points: Pixel[] = [];

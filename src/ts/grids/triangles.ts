@@ -3,6 +3,7 @@ import { polygon, create } from '../lib/svg';
 import { getColor } from '../lib/colors';
 
 const TRIANGLE_SCALE = 0.8;
+const SVG_SIZE = 100;
 
 export function generateTriangleGrid(
   columnsCount: number,
@@ -12,7 +13,7 @@ export function generateTriangleGrid(
 
   const side = 1;
   const h = (side * Math.sqrt(3)) / 2;
-  const r = (h / 3) * 2;
+  const r = (h / 3) * 2 * SVG_SIZE;
 
   const horizontalStep = side / 2;
   const verticalStep = h;
@@ -44,12 +45,12 @@ export function generateTriangleGrid(
       const path = [0, 1, 2].map((index) => {
         const angle = index * DEG_120 + DEG_30 + angleOffset;
         return {
-          x: 0.5 + r * TRIANGLE_SCALE * Math.cos(angle),
-          y: 0.5 + r * TRIANGLE_SCALE * Math.sin(angle),
+          x: 0.5 * SVG_SIZE + r * TRIANGLE_SCALE * Math.cos(angle),
+          y: 0.5 * SVG_SIZE + r * TRIANGLE_SCALE * Math.sin(angle),
         };
       });
 
-      const $element = create({ width: 1, height: 1 });
+      const $element = create({ width: SVG_SIZE, height: SVG_SIZE });
       const $polygon = polygon(path, { fill: getColor({ x, y: y + yLocal }) });
 
       $element.classList.add('triangle');

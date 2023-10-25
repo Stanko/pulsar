@@ -9,12 +9,31 @@
 </head>
 
 <body>
-  <div class="app">
+  <div class="app" id="debug">
     <div class="animation">
       <div class="pixel-wrapper"></div>
     </div>
     <div class="controls">
+      <h1>Pulsar</h1>
+
+      <div>
+        <button class="step-back">Step back</button>
+        <button class="play-pause">Play</button>
+        <button class="step-forward">Step forward</button>
+      </div>
+
+      <div class="code-wrapper">
+        <pre class="error"></pre>
+        <div class="control-name">Code:</div>
+        <pre>(x, y, t) => </pre>
+        <div class="code-editor">
+          <pre class="code-editor__highlighted-code" aria-hidden="true"></pre>
+          <textarea maxlength="120" name="code" class="code-editor__input" spellcheck="false"></textarea>
+        </div>
+      </div>
+
       <div class="control control--radio control--grid">
+        <div class="control-name">Type:</div>
         <label>
           <input type="radio" name="grid" value="classic" />
           <span class="label">Classic</span>
@@ -30,6 +49,7 @@
       </div>
 
       <div class="control control--radio">
+        <div class="control-name">Animate:</div>
         <label>
           <input type="radio" name="animate" value="scale" />
           <span class="label">Scale</span>
@@ -44,24 +64,24 @@
         </label>
       </div>
 
-      <button class="play-pause">Play/pause</button>
-      <button class="step-back">Step back</button>
-      <button class="step-forward">Step forward</button>
-
       <div class="control control--range">
         <label>
-          <span class="label">Speed</span>
-          <input type="range" min="10" max="30" step="5" name="speed" />
+          <span class="label control-name">Speed:</span>
+          <input type="range" min="0" max="2" step="1" name="speed" />
         </label>
       </div>
 
-      <div class="code-editor">
-        <pre class="code-editor__highlighted-code" aria-hidden="true"></pre>
-        <textarea maxlength="120" name="code" class="code-editor__input" spellcheck="false"></textarea>
+      <div class="checkbox-wrapper">
+        <label>
+          <input type="checkbox" name="autoplay" />
+          <span class="control-name">Autoplay on load</span>
+        </label>
       </div>
-      <pre class="error"></pre>
+
+      <a href=".">Reset</a>
     </div>
   </div>
+  <button class="toggle-ui">Hide UI</button>
   <script type="module" src="/ts/app.ts"></script>
 </body>
 
