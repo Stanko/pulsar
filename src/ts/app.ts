@@ -1,15 +1,15 @@
 import '../css/style.scss';
-import { generateHexGrid } from './grids/hex';
+import { generateHexGrid } from './grid/hex';
 
 import './lib/controls';
-import './lib/eval';
+import './lib/calculate';
 
-import { calculateGrid, hideError, showError } from './lib/eval';
-import { generateTriangleGrid } from './grids/triangles';
+import { calculateGrid } from './lib/calculate';
+import { generateTriangleGrid } from './grid/triangles';
 import { Pixel, GridType } from './lib/types';
 
 import './lib/code-editor';
-import { generateCirclesGrid } from './grids/circles';
+import { generateCirclesGrid } from './grid/circles';
 import { $autoplay, params } from './lib/controls';
 
 // ----- Constants ----- //
@@ -59,7 +59,7 @@ window.addEventListener('hashchange', () => {
 
 const messageHandler = (e: MessageEvent<any>) => {
   if (e.data.error) {
-    showError(e.data.error);
+    // showError(e.data.error);
     return;
   }
 

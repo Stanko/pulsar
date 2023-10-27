@@ -376,16 +376,21 @@ button {
   font-size: 16px;
   font-weight: bold;
   line-height: 1;
-  display: inline-flex;
-  align-items: center;
   font-weight: bold;
-  padding: 12px 20px;
   cursor: pointer;
   outline: none;
 
+  span {
+    padding: 12px 20px 12px 18px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
   svg {
-    margin-right: 6px;
-    color: var(--fg);
+    color: var(--main);
+    height: 1;
+    width: 1;
   }
 }
 

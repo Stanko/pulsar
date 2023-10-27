@@ -1,4 +1,4 @@
-import { GetPointValue, WorkerData } from './types';
+import { GetPointValue, WorkerRequest } from './types';
 
 const MAXIMUM_VALUE = 1;
 
@@ -49,7 +49,7 @@ const MATH_PROPS = [
 ].join(', ');
 
 onmessage = function (e: MessageEvent) {
-  const { grid, t, userCode } = e.data as WorkerData;
+  const { grid, t, userCode } = e.data as WorkerRequest;
 
   const data = [];
 
@@ -86,7 +86,9 @@ onmessage = function (e: MessageEvent) {
       data.push(value);
     }
 
-    postMessage(data);
+    postMessage({
+      data,
+    });
   } catch (e) {
     postMessage({
       error: (e as Error).message,

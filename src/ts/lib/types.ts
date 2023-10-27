@@ -19,7 +19,7 @@ export type Circle = {
   $element: SVGCircleElement;
 };
 
-export type WorkerData = {
+export type WorkerRequest = {
   grid: Point[];
   t: number;
   userCode: string;
@@ -44,5 +44,16 @@ export type SVGOptions = {
 };
 
 export type GridType = 'classic' | 'hex' | 'triangular';
+export type AnimationType = 'both' | 'scale' | 'opacity';
 
+// export type Params = {
+//   grid: GridType;
+//   animate: AnimationType;
+//   code: string;
+// };
 export type Params = Record<string, any>;
+
+export type WorkerResponse = {
+  error?: string;
+  data: number[];
+};

@@ -3,9 +3,11 @@ import { Params } from './types';
 // ----- Autoplay ----- //
 
 const AUTOPLAY_KEY = 'pulsar:autoplay';
+
 export const $autoplay = document.querySelector(
   'input[name=autoplay]'
 ) as HTMLInputElement;
+
 $autoplay.checked = localStorage.getItem(AUTOPLAY_KEY) === 'true';
 
 $autoplay.addEventListener('change', () => {
@@ -13,10 +15,6 @@ $autoplay.addEventListener('change', () => {
 });
 
 // ----- Params ----- //
-
-const $inputs = [
-  ...document.querySelectorAll('.control input, .code-editor__input'),
-] as HTMLInputElement[];
 
 const gridTypes = ['classic', 'hex', 'triangular'];
 const animateTypes = ['both', 'scale', 'opacity'];
@@ -30,12 +28,12 @@ const examples = [
   '((Math.cos(t + x + Math.cos(t)) + Math.sin(t + y)) + 2) / 4',
   'Math.sqrt(x*x + y*y) > (Math.cos(x + t) + 1) / 2 * 5  ? noise(x + t, y + t) * 0.3 : 1',
   'Math.cos(x + t) > y * 0.3 + 0.5 ? (Math.cos(x + t) + 1) / 4 + 0.5 : 0', // 'Math.cos(x + t) > y * 0.3 + 0.5 ? 0.8 : 0',
+  '(t % 10) >= 5 ? (t % 5) / 5 : (5 - (t % 5)) / 5', // pulse
 ];
 
 const DEFAULT_PARAMS: Params = {
   grid: 'classic',
   animate: 'scale',
-  speed: 1,
   code: examples[Math.floor(Math.random() * examples.length)],
 };
 
@@ -59,20 +57,6 @@ export const PARAMS = [
     },
   },
   {
-    name: 'speed',
-    validate: (value: string) => {
-      const intValue = parseInt(value, 10);
-      const MIN = 1;
-      const MAX = 9;
-
-      if (intValue >= MIN && intValue <= MAX) {
-        return intValue;
-      }
-
-      return DEFAULT_PARAMS.speed;
-    },
-  },
-  {
     name: 'code',
     validate: (value: string) => {
       const code = decodeCode(value);
@@ -86,7 +70,7 @@ export const PARAMS = [
   },
 ];
 
-export const params: Params = { ...DEFAULT_PARAMS };
+// export const params: Params = { ...DEFAULT_PARAMS };
 
 export function toQueryString(params: Record<string, any>): string {
   return Object.entries(params)
@@ -114,45 +98,69 @@ export function decodeCode(code: string): string {
   }
 }
 
-// Update URL after input changes
-function updateURL() {
-  const queryString = toQueryString(params);
-  const url = `${window.location.origin}${window.location.pathname}?${queryString}`;
+export class Controls {
+  params: Params = { ...DEFAULT_PARAMS };
+  handler: (params: Params, name: string) => void;
+  $inputs: (HTMLInputElement | HTMLTextAreaElement)[];
 
-  window.history.replaceState(null, '', url);
+  constructor(handler: (params: Params, name: string) => void) {
+    this.handler = handler;
+
+    this.$inputs = [
+      ...(document.querySelectorAll(
+        'input[name=grid], input[name=animate], textarea[name=code]'
+      ) as NodeListOf<HTMLInputElement | HTMLTextAreaElement>),
+    ];
+
+    // Add event listeners
+    this.$inputs.forEach(($input) => {
+      $input.addEventListener('input', () => {
+        this.params[$input.name] = $input.value;
+        this.updateURL();
+        this.handler(this.params, $input.name);
+      });
+    });
+
+    this.updateParamsFromURL();
+  }
+
+  // Update inputs from params
+  updateInputs() {
+    this.$inputs.forEach(($input) => {
+      if ($input.type === 'radio' || $input.type === 'checkbox') {
+        ($input as HTMLInputElement).checked =
+          $input.value === this.params[$input.name];
+      } else {
+        $input.value = this.params[$input.name];
+      }
+
+      $input.dispatchEvent(new Event('change'));
+    });
+  }
+
+  // Update params from URL
+  updateParamsFromURL() {
+    const URLParams = new URLSearchParams(window.location.search);
+
+    PARAMS.forEach((param) => {
+      if (
+        URLParams.get(param.name) &&
+        Object.keys(this.params).includes(param.name)
+      ) {
+        this.params[param.name] = param.validate(
+          URLParams.get(param.name) || ''
+        );
+      }
+    });
+
+    this.updateInputs();
+  }
+
+  // Update URL after input changes
+  updateURL() {
+    const queryString = toQueryString(this.params);
+    const url = `${window.location.origin}${window.location.pathname}?${queryString}`;
+
+    window.history.pushState(null, '', url);
+  }
 }
-
-// Update params from URL
-function updateParamsFromURL() {
-  const URLParams = new URLSearchParams(window.location.search);
-
-  PARAMS.forEach((param) => {
-    if (URLParams.get(param.name) && Object.keys(params).includes(param.name)) {
-      params[param.name] = param.validate(URLParams.get(param.name) || '');
-    }
-  });
-
-  updateInputs();
-}
-
-// Update inputs from params
-function updateInputs() {
-  $inputs.forEach(($input) => {
-    if ($input.type === 'radio' || $input.type === 'checkbox') {
-      $input.checked = $input.value === params[$input.name];
-    } else {
-      $input.value = params[$input.name];
-    }
-    $input.dispatchEvent(new Event('change'));
-  });
-}
-
-// Add event listeners
-$inputs.forEach(($input) => {
-  $input.addEventListener('input', () => {
-    params[$input.name] = $input.value;
-    updateURL();
-  });
-});
-
-updateParamsFromURL();

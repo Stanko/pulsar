@@ -9,80 +9,165 @@
 </head>
 
 <body>
-  <div class="app" id="debug">
-    <div class="animation">
-      <div class="pixel-wrapper"></div>
+  <div class="pulsar is-paused" id="debug">
+    <div class="animation-wrapper">
+      <div class="animation">
+        <div class="pixel-wrapper"></div>
+      </div>
     </div>
+
     <div class="controls">
-      <h1>Pulsar</h1>
+      <h1 aria-label="Pulsar">
+        <span aria-hidden="true">P</span>
+        <span aria-hidden="true">u</span>
+        <span aria-hidden="true">l</span>
+        <span aria-hidden="true">s</span>
+        <span aria-hidden="true">a</span>
+        <span aria-hidden="true">r</span>
+      </h1>
+      <p>
+        Micro creative coding playground.
+      </p>
+
+      <div class="editor">
+        <label class="editor__label" for="editor__textarea">Code:</label>
+        <pre class="editor__prefix">(x, y, t) => </pre>
+        <div class="editor__wrapper">
+          <pre class="editor__pre" aria-hidden="true"></pre>
+          <textarea id="editor__textarea" maxlength="120" name="code" class="editor__textarea"
+            spellcheck="false"></textarea>
+        </div>
+        <div class="editor__error"></div>
+      </div>
+
+      <div class="radio__wrapper" role="radiogroup" aria-labelledby="radio-grid-name">
+        <div class="radio__name" id="radio-grid-name">Type:</div>
+        <!-- Circles -->
+        <label>
+          <input class="radio__input radio__input--classic" type="radio" name="grid" value="classic" />
+          <div class="radio__label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="8" />
+            </svg>
+            Classic
+          </div>
+        </label>
+        <!-- Hex -->
+        <label>
+          <input class="radio__input radio__input--hex" type="radio" name="grid" value="hex" />
+          <div class="radio__label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path
+                d="M14 4.577v6.846L8 15l-6-3.577V4.577L8 1l6 3.577zM8.5.134a1 1 0 0 0-1 0l-6 3.577a1 1 0 0 0-.5.866v6.846a1 1 0 0 0 .5.866l6 3.577a1 1 0 0 0 1 0l6-3.577a1 1 0 0 0 .5-.866V4.577a1 1 0 0 0-.5-.866L8.5.134z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M8.5.134a1 1 0 0 0-1 0l-6 3.577a1 1 0 0 0-.5.866v6.846a1 1 0 0 0 .5.866l6 3.577a1 1 0 0 0 1 0l6-3.577a1 1 0 0 0 .5-.866V4.577a1 1 0 0 0-.5-.866L8.5.134z" />
+            </svg>
+            Hex
+          </div>
+        </label>
+        <!-- Triangular -->
+        <label>
+          <input class="radio__input radio__input--triangular" type="radio" name="grid" value="triangular" />
+          <div class="radio__label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path
+                d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z" />
+            </svg>
+            Triangular
+          </div>
+        </label>
+      </div>
+
+      <div class="radio__wrapper" role="radiogroup" aria-labelledby="radio-animate-name">
+        <div class="radio__name" id="radio-animate-name">Animate:</div>
+        <!-- Scale -->
+        <label>
+          <input class="radio__input radio__input--scale" type="radio" name="animate" value="scale" />
+          <div class="radio__label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <circle cx="8" cy="8" r="8" />
+            </svg>
+            Scale
+          </div>
+        </label>
+        <!-- Opacity -->
+        <label>
+          <input class="radio__input radio__input--opacity" type="radio" name="animate" value="opacity" />
+          <div class="radio__label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path
+                d="M14 4.577v6.846L8 15l-6-3.577V4.577L8 1l6 3.577zM8.5.134a1 1 0 0 0-1 0l-6 3.577a1 1 0 0 0-.5.866v6.846a1 1 0 0 0 .5.866l6 3.577a1 1 0 0 0 1 0l6-3.577a1 1 0 0 0 .5-.866V4.577a1 1 0 0 0-.5-.866L8.5.134z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M8.5.134a1 1 0 0 0-1 0l-6 3.577a1 1 0 0 0-.5.866v6.846a1 1 0 0 0 .5.866l6 3.577a1 1 0 0 0 1 0l6-3.577a1 1 0 0 0 .5-.866V4.577a1 1 0 0 0-.5-.866L8.5.134z" />
+            </svg>
+            Opacity
+          </div>
+        </label>
+        <!-- Both -->
+        <label>
+          <input class="radio__input radio__input--both" type="radio" name="animate" value="both" />
+          <div class="radio__label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path
+                d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z" />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path fill-rule="evenodd"
+                d="M7.022 1.566a1.13 1.13 0 0 1 1.96 0l6.857 11.667c.457.778-.092 1.767-.98 1.767H1.144c-.889 0-1.437-.99-.98-1.767L7.022 1.566z" />
+            </svg>
+            Both
+          </div>
+        </label>
+      </div>
 
       <div>
         <button class="step-back">Step back</button>
-        <button class="play-pause">Play</button>
+        <button class="play-pause">
+          <span class="play-pause__play-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path
+                d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393z" />
+            </svg>
+            Play
+          </span>
+          <span class="play-pause__pause-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+              <path
+                d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5zm5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5z" />
+            </svg>
+            Pause
+          </span>
+        </button>
         <button class="step-forward">Step forward</button>
       </div>
 
-      <div class="code-wrapper">
-        <pre class="error"></pre>
-        <div class="control-name">Code:</div>
-        <pre>(x, y, t) => </pre>
-        <div class="code-editor">
-          <pre class="code-editor__highlighted-code" aria-hidden="true"></pre>
-          <textarea maxlength="120" name="code" class="code-editor__input" spellcheck="false"></textarea>
-        </div>
-      </div>
-
-      <div class="control control--radio control--grid">
-        <div class="control-name">Type:</div>
-        <label>
-          <input type="radio" name="grid" value="classic" />
-          <span class="label">Classic</span>
-        </label>
-        <label>
-          <input type="radio" name="grid" value="hex" />
-          <span class="label">Hex</span>
-        </label>
-        <label>
-          <input type="radio" name="grid" value="triangular" />
-          <span class="label">Triangular</span>
-        </label>
-      </div>
-
-      <div class="control control--radio">
-        <div class="control-name">Animate:</div>
-        <label>
-          <input type="radio" name="animate" value="scale" />
-          <span class="label">Scale</span>
-        </label>
-        <label>
-          <input type="radio" name="animate" value="opacity" />
-          <span class="label">Opacity</span>
-        </label>
-        <label>
-          <input type="radio" name="animate" value="both" />
-          <span class="label">Both</span>
-        </label>
-      </div>
-
-      <div class="control control--range">
-        <label>
-          <span class="label control-name">Speed:</span>
-          <input type="range" min="0" max="2" step="1" name="speed" />
-        </label>
-      </div>
-
-      <div class="checkbox-wrapper">
-        <label>
-          <input type="checkbox" name="autoplay" />
-          <span class="control-name">Autoplay on load</span>
+      <div class="checkbox">
+        <label class="checkbox-wrapper">
+          <input class="checkbox-input" type="checkbox" name="autoplay" />
+          <span class="checkbox-label">Autoplay on load</span>
         </label>
       </div>
 
       <a href=".">Reset</a>
+
+      <button class="toggle-ui">Hide UI</button>
     </div>
   </div>
-  <button class="toggle-ui">Hide UI</button>
-  <script type="module" src="/ts/app.ts"></script>
+  <script type="module" src="./ts/pulsar.ts"></script>
 </body>
 
 </html>
