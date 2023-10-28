@@ -15,6 +15,9 @@ const $root: HTMLDivElement = document.querySelector(
 const $playPause: HTMLButtonElement = document.querySelector(
   '.play-pause'
 ) as HTMLButtonElement;
+const $toggleUIButtons: HTMLButtonElement[] = [
+  ...(document.querySelectorAll('.toggle-ui') as NodeListOf<HTMLButtonElement>),
+];
 
 class Pulsar {
   // Animation
@@ -38,20 +41,18 @@ class Pulsar {
 
     this.controls = new Controls((params: Params, name: string) => {
       if (name === 'grid') {
-        // this.params.grid = $gridInput.value as GridType;
         this.grid.update(params.grid);
-
-        if (!this.isPlaying) {
-          this.draw();
-        }
       } else if (name === 'code') {
         if (this.isPlaying) {
-          // Start animation when user changes code
+          // Make sure to start animation when user changes code
+          // cause it can be paused on error
           this.play();
-        } else {
-          // Draw once when user changes code if the animation is paused
-          this.draw();
         }
+      }
+
+      // If the animation is paused, draw once when any of the params change
+      if (!this.isPlaying) {
+        this.draw();
       }
     });
 
@@ -73,6 +74,13 @@ class Pulsar {
       } else {
         this.play();
       }
+    });
+
+    // Toggle UI
+    $toggleUIButtons.forEach(($toggleUI) => {
+      $toggleUI.addEventListener('click', () => {
+        document.body.classList.toggle('ui-hidden');
+      });
     });
   }
 
@@ -125,6 +133,7 @@ class Pulsar {
     this.time = this.timeSinceLastRestart;
 
     cancelAnimationFrame(this.raf);
+    this.updateRootClass();
   }
 
   async draw() {
@@ -162,14 +171,12 @@ class Pulsar {
     response.data.forEach((value: number, index: number) => {
       const point = this.grid.pixels[index];
 
-      // TODO
-      // Investigate, once I got "Uncaught TypeError: point is undefined"
-      // but I couldn't reproduce it and everything kept working normally.
-      // It is probably happened when grid was changed and there was a leftover queue
-      // for updating the old grid after message from the worker.
-      // if (!point) {
-      //   return;
-      // }
+      // Not every grid type has the same number of points.
+      // Therefore when the grid is changed multiple times in a single requestAnimationFrame,
+      // we need to check if the point exists
+      if (!point) {
+        return;
+      }
 
       const PERSPECTIVE = 100;
 
@@ -206,41 +213,6 @@ class Pulsar {
     }
   };
 }
-
-// class Checkbox {
-//   $element: HTMLInputElement;
-//   checked: boolean;
-
-//   constructor(
-//     $element: HTMLInputElement,
-//     onChange: ((e: Event) => void) | undefined = undefined
-//   ) {
-//     this.checked = $element.checked;
-//     this.$element = $element;
-//     this.$element.addEventListener('change', this.handleChange);
-//   }
-
-//   handleChange = () => {
-//     this.checked = this.$element.checked;
-//   };
-// }
-
-// class Control {
-//   $element: HTMLInputElement;
-//   validate: (value: string) => boolean;
-
-//   constructor(
-//     $element: HTMLInputElement,
-//     validate: (value: string) => boolean
-//   ) {
-//     this.$element = $element;
-//     this.validate = validate;
-
-//     this.$element.addEventListener('change', this.handleChange);
-//   }
-
-//   handleChange = () => {};
-// }
 
 export default Pulsar;
 

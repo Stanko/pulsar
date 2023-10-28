@@ -1,4 +1,4 @@
-import { Point, SVGOptions } from './types';
+import { Point, SVGOptions } from '../lib/types';
 
 export function create(options: SVGOptions): SVGElement {
   const $svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');

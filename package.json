@@ -1,11 +1,11 @@
 {
   "name": "pulsar",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && touch ./docs/.nojekyll",
     "preview": "vite preview"
   },
   "devDependencies": {

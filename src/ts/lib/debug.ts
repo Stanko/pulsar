@@ -1,4 +1,4 @@
-const debug = false;
+const debug = true;
 
 // const update = () => {
 //   debug = window.location.hash === '#debug';

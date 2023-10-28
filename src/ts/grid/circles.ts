@@ -1,5 +1,5 @@
 import { Pixel } from '../lib/types';
-import { circle, create } from '../lib/svg';
+import { circle, create } from './svg';
 import { getColor } from '../lib/colors';
 
 const CIRCLE_SCALE = 0.88;

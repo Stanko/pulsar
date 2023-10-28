@@ -1,5 +1,5 @@
 import { Pixel } from '../lib/types';
-import { polygon, create } from '../lib/svg';
+import { polygon, create } from './svg';
 import { getColor } from '../lib/colors';
 
 const SCALE = 1.1; // Scale to fit the grid into the SVG bounds

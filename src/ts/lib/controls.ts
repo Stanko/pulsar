@@ -161,6 +161,6 @@ export class Controls {
     const queryString = toQueryString(this.params);
     const url = `${window.location.origin}${window.location.pathname}?${queryString}`;
 
-    window.history.pushState(null, '', url);
+    window.history.replaceState(null, '', url);
   }
 }

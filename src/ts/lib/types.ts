@@ -46,11 +46,6 @@ export type SVGOptions = {
 export type GridType = 'classic' | 'hex' | 'triangular';
 export type AnimationType = 'both' | 'scale' | 'opacity';
 
-// export type Params = {
-//   grid: GridType;
-//   animate: AnimationType;
-//   code: string;
-// };
 export type Params = Record<string, any>;
 
 export type WorkerResponse = {

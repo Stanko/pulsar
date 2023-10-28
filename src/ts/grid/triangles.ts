@@ -1,5 +1,5 @@
 import { Pixel } from '../lib/types';
-import { polygon, create } from '../lib/svg';
+import { polygon, create } from './svg';
 import { getColor } from '../lib/colors';
 
 const TRIANGLE_SCALE = 0.8;
@@ -51,7 +51,9 @@ export function generateTriangleGrid(
       });
 
       const $element = create({ width: SVG_SIZE, height: SVG_SIZE });
-      const $polygon = polygon(path, { fill: getColor({ x, y: y + yLocal }) });
+      const $polygon = polygon(path, {
+        fill: getColor({ x, y: y + yLocal }, 1 / TRIANGLE_SCALE),
+      });
 
       $element.classList.add('triangle');
       $element.appendChild($polygon);

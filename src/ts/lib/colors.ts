@@ -12,8 +12,10 @@ export const colors = [
   '#ff2c55',
 ];
 
-export function getColor(point: Point): string {
-  const d = Math.sqrt(Math.pow(point.x, 2) + Math.pow(point.y, 2));
+export function getColor(point: Point, scale: number = 1): string {
+  const d = Math.sqrt(
+    Math.pow(point.x * scale, 2) + Math.pow(point.y * scale, 2)
+  );
 
   return colors[Math.floor(d)] || colors[colors.length - 1];
 }

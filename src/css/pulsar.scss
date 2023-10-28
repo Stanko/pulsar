@@ -32,8 +32,7 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --bg-transparent: rgba(30, 44, 58, 0.7);
-  --bg-transparent-dark: rgba(10, 20, 30, 0.85);
+  --bg-transparent: rgba(20, 34, 48, 0.85);
 
   --bg: rgb(20, 34, 48);
   --fg: #eee;
@@ -47,8 +46,12 @@
   --purple: #5856d7;
   --mystic-magenta: #af52de; // xD
 
-  --main: #ff2c55;
-  --accent-color: #ff2c55;
+  --red-contrast: hsl(348, 100%, 65%);
+  --blue-contrast: hsl(211, 100%, 60%);
+  --purple-contrast: hsl(241, 62%, 70%);
+  --yellow-contrast: hsl(48, 100%, 60%);
+
+  --text-opacity: 0.7;
 }
 
 // ---- Reset ---- //
@@ -61,9 +64,11 @@
 }
 
 *:focus-visible {
-  // TODO remove
-  outline: 2px solid var(--main);
-  outline-offset: 5px;
+  outline: 2px solid var(--purple-contrast);
+}
+
+svg {
+  display: block;
 }
 
 // ---- Typography ---- //
@@ -113,6 +118,10 @@ h1 {
   }
 }
 
+p {
+  opacity: var(--text-opacity);
+}
+
 a,
 a:visited {
   color: #dceaf7;
@@ -121,15 +130,19 @@ a:visited {
 }
 
 a:hover {
-  color: var(--main);
+  // color: var(--blue-contrast);
 }
 
 a:active {
-  transform: translateY(1px);
+  // transform: translateY(1px);
 }
 
 a:focus-visible {
-  text-decoration: underline;
+  // text-decoration: underline;
+}
+
+button {
+  cursor: pointer;
 }
 
 button,
@@ -149,15 +162,74 @@ pre {
   flex-direction: column;
   min-height: 100vh;
   min-height: 100svh;
+  max-width: 1200px;
   margin: 0 auto;
-
-  @include md {
-    // padding: 40px;
-  }
 
   @include lg {
     flex-direction: row;
   }
+}
+
+.title {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+// ----- Button ----- //
+
+.icon-button,
+.button {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: none;
+  color: white;
+  border-radius: 100px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.icon-button:hover,
+.button:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.icon-button:active,
+.button:active {
+  transform: translateY(1px);
+}
+
+.icon-button:focus-visible,
+.button:focus-visible {
+  outline: 2px solid var(--purple-contrast);
+}
+
+.icon-button {
+  padding: 10px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.icon-button:hover {
+  color: white;
+}
+
+.button {
+  display: inline-flex;
+  padding: 10px 21px 10px 18px;
+
+  svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+.button span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.button:hover svg {
+  color: var(--purple-contrast);
 }
 
 // ----- Play / pause button ----- //
@@ -186,9 +258,9 @@ $pixel-size: 7.5%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 500ms;
 
   @include lg {
+    margin-top: -10%;
   }
 }
 
@@ -205,7 +277,6 @@ $pixel-size: 7.5%;
 
 .pixel-wrapper svg {
   position: absolute;
-  display: block;
   overflow: visible;
 
   will-change: transform;
@@ -216,25 +287,91 @@ $pixel-size: 7.5%;
   height: 100%;
 }
 
+// ----- Toggle UI ----- //
+
+.toggle-ui {
+  @include md {
+    display: none;
+  }
+}
+
+.toggle-ui__absolute {
+  display: none;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+
+  @include md {
+    display: block;
+  }
+}
+
+.toggle-ui__show-label {
+  display: none;
+}
+
+.ui-hidden {
+  .controls {
+    display: none;
+  }
+
+  .animation {
+    margin-top: -10%;
+  }
+
+  .toggle-ui__absolute {
+    display: block;
+  }
+
+  .toggle-ui__show-label {
+    display: block;
+  }
+
+  .toggle-ui__hide-label {
+    display: none;
+  }
+}
+
 // ----- Controls ----- //
 
 .controls {
-  background-color: var(--bg-transparent-dark);
+  background-color: var(--bg-transparent);
   backdrop-filter: blur(5px);
   -webkit-backdrop-filter: blur(5px);
   z-index: 1;
-  padding: 20px;
-
+  padding: 30px;
+  max-width: 600px;
+  width: 100%;
+  margin-inline: auto;
   border-radius: 20px 20px 0 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  row-gap: 15px;
+
+  @include md {
+    padding: 40px;
+    row-gap: 20px;
+  }
 
   @include lg {
     border-radius: 0;
-    width: 400px;
+    width: 450px;
+    margin: 0;
+    padding: 40px;
+    padding-top: 0;
+    background: none;
+    backdrop-filter: none;
   }
 
   @include xl {
     border-radius: 0;
-    width: 500px;
+    width: 600px;
+    padding: 60px;
+    padding-top: 0;
   }
 }
 
@@ -242,6 +379,16 @@ $pixel-size: 7.5%;
 
 .radio__wrapper {
   display: flex;
+  flex-wrap: wrap;
+  column-gap: 15px;
+}
+
+.radio__name {
+  margin-right: auto;
+  flex: 100% 0 0;
+  font-size: 16px;
+  margin-bottom: 4px;
+  display: block;
 }
 
 .radio__input {
@@ -258,10 +405,16 @@ $pixel-size: 7.5%;
   display: flex;
   align-items: center;
   gap: 6px;
-}
+  border-radius: 100px;
+  padding-inline: 5px;
+  margin-inline: -5px;
+  font-weight: bold;
+  font-size: 16px;
+  cursor: pointer;
 
-.radio__label svg {
-  // margin-top: -2px;
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 .radio__label svg:nth-child(2) {
@@ -269,8 +422,8 @@ $pixel-size: 7.5%;
 }
 
 .radio__input:focus-visible + .radio__label {
-  outline: 2px solid var(--main);
-  outline-offset: 5px;
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 .radio__input:checked + .radio__label {
@@ -282,6 +435,7 @@ $pixel-size: 7.5%;
   }
 }
 
+// Grid
 .radio__input--classic:checked + .radio__label {
   color: var(--green);
 }
@@ -289,21 +443,55 @@ $pixel-size: 7.5%;
   color: var(--light-blue);
 }
 .radio__input--triangular:checked + .radio__label {
-  color: var(--blue);
+  color: var(--blue-contrast);
+}
+
+// Animate property
+.radio__input--scale:checked + .radio__label {
+  color: var(--purple-contrast);
+}
+.radio__input--opacity:checked + .radio__label {
+  color: var(--mystic-magenta);
+}
+.radio__input--both:checked + .radio__label {
+  color: var(--red-contrast);
+}
+
+// autoplay
+.radio__input--autoplay:checked + .radio__label {
+  color: var(--yellow-contrast);
 }
 
 // ----- Editor ----- //
 
 .editor {
+  position: relative;
+  width: 100%;
+}
+
+.editor__error {
+  position: absolute;
+  background-color: var(--bg);
+  top: 0;
+  left: 0;
+  color: var(--orange);
+  font-size: 16px;
+}
+
+.editor__label {
+  font-size: 16px;
+  margin-bottom: 4px;
+  display: block;
 }
 
 .editor__prefix {
   font-size: 14px;
-  opacity: 0.8;
+  opacity: var(--text-opacity);
+  // TODO should I remove this?
+  display: none;
 }
 
 .editor__wrapper {
-  margin-top: 6px;
   font-weight: normal;
   text-align: left;
   width: 100%;
@@ -325,15 +513,15 @@ $pixel-size: 7.5%;
   font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas,
     'DejaVu Sans Mono', monospace;
   font-size: 17px;
-  padding: 12px;
+  padding: 10px 12px;
   border: none;
   display: block;
-  line-height: 26px;
+  line-height: 1.6;
   border-radius: 10px;
 
   @include md {
-    font-size: 20px;
-    padding: 18px;
+    font-size: 18px;
+    padding: 14px 16px;
   }
 }
 
@@ -350,8 +538,8 @@ $pixel-size: 7.5%;
   }
 
   // Debug
-  color: var(--light-blue);
-  position: relative;
+  // color: var(--light-blue);
+  // position: relative;
 }
 
 .editor__pre {

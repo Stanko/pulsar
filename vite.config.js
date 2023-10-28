@@ -6,4 +6,9 @@ export default {
     host: true,
   },
   root: './src',
+  base: '/pulsar/',
+  build: {
+    outDir: '../docs',
+    emptyOutDir: true,
+  },
 };
