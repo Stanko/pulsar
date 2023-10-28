@@ -170,11 +170,14 @@ pre {
   }
 }
 
+.top {
+  width: 100%;
+}
+
 .title {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  width: 100%;
 }
 
 // ----- Button ----- //

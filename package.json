@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "start": "vite",
-    "build": "tsc && vite build && touch ./docs/.nojekyll",
+    "build": "tsc && vite build && touch ./docs/.nojekyll && git add ./docs/*",
     "preview": "vite preview"
   },
   "devDependencies": {
