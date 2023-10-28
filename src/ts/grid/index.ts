@@ -15,12 +15,15 @@ export class Grid {
     '.pixel-wrapper'
   ) as HTMLDivElement;
   pixels: Pixel[] = [];
+  type: GridType = 'classic';
 
   constructor(type: GridType = 'classic') {
+    this.type = type;
     this.update(type);
   }
 
   update(type: GridType = 'classic') {
+    this.type = type;
     this.pixels = gridMap[type]();
 
     this.$element.replaceChildren(

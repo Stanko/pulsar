@@ -14,8 +14,8 @@
   <link href="https://muffinman.io/favicon/purple/icon.svg" rel="icon" type="image/svg+xml">
   <link href="https://muffinman.io/favicon/purple/icon-180.png" rel="apple-touch-icon">
   <link href="https://muffinman.io/favicon/purple/manifest.webmanifest" rel="manifest">
-  <script type="module" crossorigin src="/pulsar/assets/index-3109b207.js"></script>
-  <link rel="stylesheet" href="/pulsar/assets/index-3f9018f1.css">
+  <script type="module" crossorigin src="/pulsar/assets/index-73c75fd6.js"></script>
+  <link rel="stylesheet" href="/pulsar/assets/index-277c58a3.css">
 </head>
 
 <body>
@@ -37,6 +37,10 @@
             <span aria-hidden="true">a</span>
             <span aria-hidden="true">r</span>
           </h1>
+          <button class="tutorial button button--sm">
+            Tutorial
+          </button>
+
           <button class="toggle-ui icon-button">
             <div class="toggle-ui__hide-label">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"
@@ -54,10 +58,11 @@
             </div>
           </button>
         </div>
-
-        <p>
+        <p class="intro-text">
           Micro creative coding playground.
         </p>
+
+
       </div>
 
       <button class="play-pause button">
@@ -79,10 +84,10 @@
 
       <div class="editor">
         <label class="editor__label" for="editor__textarea">Code:</label>
-        <pre class="editor__prefix">(x, y, t) => </pre>
+        <pre class="editor__prefix">(x,y,t) => </pre>
         <div class="editor__wrapper">
           <pre class="editor__pre" aria-hidden="true"></pre>
-          <textarea id="editor__textarea" maxlength="120" name="code" class="editor__textarea"
+          <textarea id="editor__textarea" maxlength="200" name="code" class="editor__textarea"
             spellcheck="false"></textarea>
         </div>
         <div class="editor__error"></div>

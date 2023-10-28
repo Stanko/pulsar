@@ -35,6 +35,10 @@
             <span aria-hidden="true">a</span>
             <span aria-hidden="true">r</span>
           </h1>
+          <button class="tutorial button button--sm">
+            Tutorial
+          </button>
+
           <button class="toggle-ui icon-button">
             <div class="toggle-ui__hide-label">
               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"
@@ -52,10 +56,11 @@
             </div>
           </button>
         </div>
-
-        <p>
+        <p class="intro-text">
           Micro creative coding playground.
         </p>
+
+
       </div>
 
       <button class="play-pause button">
@@ -77,10 +82,10 @@
 
       <div class="editor">
         <label class="editor__label" for="editor__textarea">Code:</label>
-        <pre class="editor__prefix">(x, y, t) => </pre>
+        <pre class="editor__prefix">(x,y,t) => </pre>
         <div class="editor__wrapper">
           <pre class="editor__pre" aria-hidden="true"></pre>
-          <textarea id="editor__textarea" maxlength="120" name="code" class="editor__textarea"
+          <textarea id="editor__textarea" maxlength="200" name="code" class="editor__textarea"
             spellcheck="false"></textarea>
         </div>
         <div class="editor__error"></div>

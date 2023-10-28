@@ -6,6 +6,8 @@ import { $autoplay, Controls } from './lib/controls';
 import { calculateGrid } from './lib/calculate';
 import { Editor } from './lib/editor';
 import { Grid } from './grid';
+import { Tutorial } from './lib/tutorial';
+
 import './lib/share-button';
 import debug from './lib/debug';
 
@@ -20,7 +22,7 @@ const $toggleUIButtons: HTMLButtonElement[] = [
   ...(document.querySelectorAll('.toggle-ui') as NodeListOf<HTMLButtonElement>),
 ];
 
-class Pulsar {
+export class Pulsar {
   // Animation
   isPlaying: boolean = false;
   raf: number = 0;
@@ -58,6 +60,8 @@ class Pulsar {
     });
 
     this.grid = new Grid(this.controls.params.grid);
+
+    new Tutorial(this);
 
     // Autoplay on load
     this.isPlaying = $autoplay.checked;
@@ -209,10 +213,8 @@ class Pulsar {
   }
 
   animate = async () => {
-    const speed = 200;
-
     this.timeSinceLastRestart =
-      this.time + (Date.now() - this.lastRestart) / speed;
+      this.time + (Date.now() - this.lastRestart) / 200;
 
     const drawNext = await this.draw();
 
@@ -221,7 +223,5 @@ class Pulsar {
     }
   };
 }
-
-export default Pulsar;
 
 new Pulsar();

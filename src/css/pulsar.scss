@@ -176,8 +176,12 @@ pre {
 
 .title {
   display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
+  align-items: flex-end;
+  margin-bottom: 10px;
+}
+
+.tutorial {
+  margin-inline: 8px auto;
 }
 
 // ----- Button ----- //
@@ -224,6 +228,10 @@ pre {
     width: 18px;
     height: 18px;
   }
+}
+
+.button--sm {
+  padding: 3px 12px;
 }
 
 .button span {
@@ -489,10 +497,11 @@ $pixel-size: 7.5%;
 }
 
 .editor__prefix {
-  font-size: 14px;
+  font-size: 13px;
+  margin-bottom: 4px;
   opacity: var(--text-opacity);
   // TODO should I remove this?
-  display: none;
+  // display: none;
 }
 
 .editor__wrapper {

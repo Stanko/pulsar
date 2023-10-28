@@ -81,6 +81,12 @@ export class Editor {
     });
   }
 
+  update(code: string) {
+    this.$textarea.value = code;
+    this.validate();
+    this.$textarea.dispatchEvent(new Event('input'));
+  }
+
   validate = () => {
     const value = this.$textarea.value.trim();
 

@@ -1,15 +1,8 @@
-const debug = true;
+let debug = localStorage.getItem('pulsar:debug') === 'true';
 
-// const update = () => {
-//   debug = window.location.hash === '#debug';
-
-//   if (debug) {
-//     document.body.classList.add('debug');
-//   } else {
-//     document.body.classList.remove('debug');
-//   }
-// };
-
-// window.addEventListener('hashchange', update);
+(window as any).debug = () => {
+  localStorage.setItem('pulsar:debug', debug.toString());
+  window.location.reload();
+};
 
 export default debug;

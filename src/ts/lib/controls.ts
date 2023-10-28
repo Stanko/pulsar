@@ -24,12 +24,12 @@ const animateTypes = ['both', 'scale', 'opacity'];
 export const CODE_MAX_LENGTH = 120;
 
 const examples = [
-  '(Math.cos(x * t / 5) + Math.sin(y * t / 5)) / 2',
-  '(Math.cos(Math.sqrt(x * x + y * y) - t) + 1) / 2',
-  '(Math.cos(Math.sin(x * y) + t * 0.66) + 1) / 2',
-  '((Math.cos(t + x + Math.cos(t)) + Math.sin(t + y)) + 2) / 4',
-  'Math.sqrt(x*x + y*y) > (Math.cos(x + t) + 1) / 2 * 5  ? noise(x + t, y + t) * 0.3 : 1',
-  'Math.cos(x + t) > y * 0.3 + 0.5 ? (Math.cos(x + t) + 1) / 4 + 0.5 : 0', // 'Math.cos(x + t) > y * 0.3 + 0.5 ? 0.8 : 0',
+  '(cos(x * t / 5) + sin(y * t / 5)) / 2',
+  '(cos(sqrt(x * x + y * y) - t) + 1) / 2',
+  '(cos(sin(x * y) + t * 0.66) + 1) / 2',
+  '((cos(t + x + cos(t)) + sin(t + y)) + 2) / 4',
+  'sqrt(x*x + y*y) > (cos(x + t) + 1) / 2 * 5  ? noise(x + t, y + t) * 0.3 : 1',
+  'cos(x + t) > y * 0.3 + 0.5 ? (cos(x + t) + 1) / 4 + 0.5 : 0', // 'cos(x + t) > y * 0.3 + 0.5 ? 0.8 : 0',
   '(t % 10) >= 5 ? (t % 5) / 5 : (5 - (t % 5)) / 5', // pulse
 ];
 
@@ -71,8 +71,6 @@ export const PARAMS = [
     },
   },
 ];
-
-// export const params: Params = { ...DEFAULT_PARAMS };
 
 export function toQueryString(params: Record<string, any>): string {
   return Object.entries(params)
@@ -124,6 +122,7 @@ export class Controls {
     });
 
     this.updateParamsFromURL();
+    this.updateURL();
   }
 
   // Update inputs from params
