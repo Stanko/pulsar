@@ -591,6 +591,14 @@ i.comments > * {
   color: inherit;
 }
 
+// ----- Buttons on bottom ----- //
+
+.bottom {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
 // ----- Share button ----- //
 
 .share {
@@ -606,10 +614,6 @@ i.comments > * {
 }
 .share .share__error-label {
   display: none;
-
-  svg {
-    color: var(--red);
-  }
 }
 
 .share.share--success {

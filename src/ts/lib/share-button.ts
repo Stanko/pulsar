@@ -21,6 +21,11 @@ $share.addEventListener('click', async () => {
       }, 3000);
     }
   } catch (error) {
+    // Fail silently if user aborted the share
+    if ((error as Error).name === 'AbortError') {
+      return;
+    }
+
     clearTimeout(timeout);
     $share.classList.add('share--error');
     timeout = setTimeout(() => {
