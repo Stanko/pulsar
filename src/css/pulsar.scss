@@ -595,16 +595,12 @@ i.comments > * {
 
 .bottom {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
 // ----- Share button ----- //
 
-.share {
-}
-.share__default-label {
-}
 .share .share__success-label {
   display: none;
 

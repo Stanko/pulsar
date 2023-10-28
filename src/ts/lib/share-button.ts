@@ -8,7 +8,7 @@ $share.addEventListener('click', async () => {
   try {
     if (navigator.share) {
       await navigator.share({
-        title: document.title,
+        title: `Check my Pulsar animation`,
         url: window.location.href,
       });
     } else {

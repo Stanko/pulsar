@@ -8,7 +8,9 @@ export const $autoplay = document.querySelector(
   'input[name=autoplay]'
 ) as HTMLInputElement;
 
-$autoplay.checked = localStorage.getItem(AUTOPLAY_KEY) === 'true';
+if (localStorage.getItem(AUTOPLAY_KEY)) {
+  $autoplay.checked = localStorage.getItem(AUTOPLAY_KEY) === 'true';
+}
 
 $autoplay.addEventListener('change', () => {
   localStorage.setItem(AUTOPLAY_KEY, $autoplay.checked.toString());
