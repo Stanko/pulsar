@@ -6,14 +6,14 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build && touch ./docs/.nojekyll && git add ./docs/*",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "postinstall": "cp ./hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit"
   },
   "devDependencies": {
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
   },
   "dependencies": {
-    "sass": "^1.69.3",
-    "seedrandom": "^3.0.5"
+    "sass": "^1.69.3"
   }
 }

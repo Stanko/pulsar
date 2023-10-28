@@ -82,6 +82,13 @@ class Pulsar {
         document.body.classList.toggle('ui-hidden');
       });
     });
+
+    // Pause when tab is hidden
+    window.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'hidden') {
+        this.pause();
+      }
+    });
   }
 
   updateRootClass() {
