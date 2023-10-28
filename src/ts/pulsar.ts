@@ -6,6 +6,7 @@ import { $autoplay, Controls } from './lib/controls';
 import { calculateGrid } from './lib/calculate';
 import { Editor } from './lib/editor';
 import { Grid } from './grid';
+import './lib/share-button';
 import debug from './lib/debug';
 
 // DOM

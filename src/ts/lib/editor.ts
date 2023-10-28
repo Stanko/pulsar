@@ -46,7 +46,7 @@ const tokens = {
   comments: /((\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/)|(\/\/.*))/g,
   logic:
     /(%=|%|\-|\+|\*|&amp;{1,2}|\|{1,2}|&lt;=|&gt;=|&lt;|&gt;|!={1,2}|={2,3})/g,
-  fn: /(?<=^|\s*)(abs|acos|asin|atan|atan2|ceil|cos|floor|log|max|min|pow|random|round|sqrt|tan|noise|async|await|window|fetch|console|alert|Math|Object|Array|String|class(?!\s*\=)|function)(?=\b)/g,
+  fn: /(?<=^|\s*)(abs|acos|asin|atan|atan2|ceil|cos|floor|log|max|min|pow|random|round|sin|sqrt|tan|noise|async|await|window|fetch|console|alert|Math|Object|Array|String|class(?!\s*\=)|function)(?=\b)/g,
   number: /(\d+(\.\d+)?(e\d+)?)/g,
   declaration: /(?<=^|\s*)(var|let|const)/g,
   parenthesis: /(\(|\))/g,

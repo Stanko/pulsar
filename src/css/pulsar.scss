@@ -590,3 +590,42 @@ i.comments {
 i.comments > * {
   color: inherit;
 }
+
+// ----- Share button ----- //
+
+.share {
+}
+.share__default-label {
+}
+.share .share__success-label {
+  display: none;
+
+  svg {
+    color: var(--green);
+  }
+}
+.share .share__error-label {
+  display: none;
+
+  svg {
+    color: var(--red);
+  }
+}
+
+.share.share--success {
+  .share__default-label {
+    display: none;
+  }
+  .share__success-label {
+    display: inline-flex;
+  }
+}
+
+.share.share--error {
+  .share__default-label {
+    display: none;
+  }
+  .share__error-label {
+    display: inline-flex;
+  }
+}
