@@ -118,27 +118,11 @@ h1 {
   }
 }
 
-p {
-  opacity: var(--text-opacity);
-}
-
 a,
 a:visited {
   color: #dceaf7;
   text-decoration: none;
   outline: none;
-}
-
-a:hover {
-  // color: var(--blue-contrast);
-}
-
-a:active {
-  // transform: translateY(1px);
-}
-
-a:focus-visible {
-  // text-decoration: underline;
 }
 
 button {
@@ -182,6 +166,10 @@ pre {
 
 .tutorial {
   margin-inline: 8px auto;
+}
+
+.intro-text {
+  opacity: var(--text-opacity);
 }
 
 // ----- Button ----- //
@@ -500,21 +488,19 @@ $pixel-size: 7.5%;
   font-size: 13px;
   margin-bottom: 4px;
   opacity: var(--text-opacity);
-  // TODO should I remove this?
-  // display: none;
 }
 
 .editor__wrapper {
   font-weight: normal;
   text-align: left;
   width: 100%;
-  min-height: 50px;
+  min-height: 48px;
   position: relative;
   border-radius: 10px;
   background: rgba(255, 255, 255, 0.05);
 
   @include md {
-    min-height: 62px;
+    min-height: 55px;
   }
 }
 

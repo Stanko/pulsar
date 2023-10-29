@@ -90,7 +90,7 @@ const steps: {
     animate: 'scale',
   },
   {
-    text: 'Experiment combining functions and parameters and have fun!',
+    text: 'Experiment combining different functions and parameters to create funky animations. Have fun!',
     code: 'sqrt(x*x + y*y) > (cos(x + t) + 1) / 2 * 5  ? noise(x + t, y + t) * 0.3 : 1',
     grid: 'classic',
     animate: 'scale',

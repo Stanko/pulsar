@@ -51,6 +51,19 @@ const examples = [
     code: 'sin(0.5 * x + y * t * 0.8) * sin(t / 4)',
     grid: 'triangular',
   },
+  {
+    code: 'sin(x * cos(t * 0.5)) + cos(y * sin(t * 0.5))',
+    grid: 'hex',
+  },
+  {
+    code: ' sin(t) * sin(x) + cos(t) * cos(y)',
+    grid: 'triangular',
+    animate: 'opacity',
+  },
+  {
+    code: 'abs(abs(x) - abs(y)) < t % 7 ? 1 : 0',
+    grid: 'hex',
+  },
 ];
 
 const randomExample = examples[Math.floor(Math.random() * examples.length)];
