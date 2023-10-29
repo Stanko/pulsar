@@ -54,6 +54,10 @@ const steps: {
     animate: 'scale',
   },
   {
+    text: 'Parameter "i" is the index of the pixel in the grid.',
+    code: 'i / 169',
+  },
+  {
     text: 'You can use any of the mathematical functions available in JavaScript like "cos" or "sqrt".',
     code: 'cos(x) + sin(y)',
     grid: 'classic',

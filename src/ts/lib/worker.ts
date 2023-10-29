@@ -58,11 +58,15 @@ onmessage = function (e: MessageEvent) {
       'x',
       'y',
       't',
+      'i',
       'noise',
-      `"use strict"; const { ${MATH_PROPS} } = Math; return ${userCode};`
+      `"use strict"; const { ${MATH_PROPS} } = Math;
+      let fn = () => ${userCode};
+      return fn();`
     ) as GetPointValue;
 
-    for (const point of grid) {
+    for (let i = 0; i < grid.length; i++) {
+      const point = grid[i];
       const { x, y } = point;
 
       let value = 0;
@@ -71,6 +75,7 @@ onmessage = function (e: MessageEvent) {
         x,
         y,
         t,
+        i,
         (x, y) => (simplex2(x / 10, y / 10) + 1) / 2
       );
 

@@ -64,6 +64,14 @@ const examples = [
     code: 'abs(abs(x) - abs(y)) < t % 7 ? 1 : 0',
     grid: 'hex',
   },
+  {
+    code: 'sin(3 * atan2(y,x) + t)',
+    grid: 'hex',
+  },
+  {
+    code: '1 - (((x + 3) * (x + 4) + y + t * 0.3 * (1 + x * x % 5) * 3) % 36) / 12',
+    animate: 'opacity',
+  },
 ];
 
 const randomExample = examples[Math.floor(Math.random() * examples.length)];

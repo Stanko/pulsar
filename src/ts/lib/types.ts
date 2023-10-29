@@ -35,6 +35,7 @@ export type GetPointValue = (
   x: number,
   y: number,
   t: number,
+  i: number,
   noise: (x: number, y: number) => number
 ) => number;
 
