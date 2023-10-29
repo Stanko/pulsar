@@ -24,19 +24,41 @@ const animateTypes = ['both', 'scale', 'opacity'];
 export const CODE_MAX_LENGTH = 120;
 
 const examples = [
-  '(cos(x * t / 5) + sin(y * t / 5)) / 2',
-  '(cos(sqrt(x * x + y * y) - t) + 1) / 2',
-  '(cos(sin(x * y) + t * 0.66) + 1) / 2',
-  '((cos(t + x + cos(t)) + sin(t + y)) + 2) / 4',
-  'sqrt(x*x + y*y) > (cos(x + t) + 1) / 2 * 5  ? noise(x + t, y + t) * 0.3 : 1',
-  'cos(x + t) > y * 0.3 + 0.5 ? (cos(x + t) + 1) / 4 + 0.5 : 0', // 'cos(x + t) > y * 0.3 + 0.5 ? 0.8 : 0',
-  '(t % 10) >= 5 ? (t % 5) / 5 : (5 - (t % 5)) / 5', // pulse
+  {
+    code: '(cos(x * t / 5) + sin(y * t / 5)) / 2',
+  },
+  {
+    code: '(cos(sqrt(x * x + y * y) - t) + 1) / 2',
+    grid: 'hex',
+  },
+  {
+    code: '(cos(sin(x * y) + t * 0.66) + 1) / 2',
+  },
+  {
+    code: '((cos(t + x + cos(t)) + sin(t + y)) + 2) / 4',
+  },
+  {
+    code: 'sqrt(x*x + y*y) > (cos(x + t) + 1) / 2 * 5  ? noise(x + t, y + t) * 0.3 : 1',
+  },
+  {
+    code: 'cos(x + t) > y * 0.3 + 0.5 ? (cos(x + t) + 1) / 4 + 0.5 : 0', // 'cos(x + t) > y * 0.3 + 0.5 ? 0.8 : 0',
+  },
+  {
+    code: 'cos(t * 0.5) * 0.5 + 0.5', // pulse
+    animate: 'opacity',
+  },
+  {
+    code: 'sin(0.5 * x + y * t * 0.8) * sin(t / 4)',
+    grid: 'triangular',
+  },
 ];
+
+const randomExample = examples[Math.floor(Math.random() * examples.length)];
 
 const DEFAULT_PARAMS: Params = {
   grid: 'classic',
   animate: 'scale',
-  code: examples[Math.floor(Math.random() * examples.length)],
+  ...randomExample,
 };
 
 export const PARAMS = [

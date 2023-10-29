@@ -36,6 +36,8 @@ const forbiddenWords = [
   'postMessage',
   'importScripts',
   'URL',
+  'console',
+  'debugger',
 ];
 
 // Highlighting code is taken from this Stack Overflow answer:
@@ -125,7 +127,3 @@ export class Editor {
     this.$error.innerHTML = '';
   }
 }
-
-const editor = new Editor();
-
-export default editor;
