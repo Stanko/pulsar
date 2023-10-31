@@ -23,6 +23,7 @@ export type WorkerRequest = {
   grid: Point[];
   t: number;
   userCode: string;
+  id: number;
 };
 
 export type Pixel = {
@@ -44,12 +45,21 @@ export type SVGOptions = {
   height: number;
 };
 
-export type GridType = 'classic' | 'hex' | 'triangular';
-export type AnimationType = 'both' | 'scale' | 'opacity';
+export type AvailableParams = 'grid' | 'animate' | 'code';
 
-export type Params = Record<string, any>;
+export type GridType = 'classic' | 'hex' | 'triangular';
+export type AnimateType = 'both' | 'scale' | 'opacity';
+
+export type Params = {
+  grid?: GridType;
+  animate?: AnimateType;
+  code?: string;
+};
 
 export type WorkerResponse = {
+  id: string;
   error?: string;
   data: number[];
 };
+
+export type StateChangeHandler = (value: string) => void;

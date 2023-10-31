@@ -228,7 +228,8 @@ pre {
   gap: 4px;
 }
 
-.button:hover svg {
+.button:hover svg,
+.button:focus-visible svg {
   color: var(--purple-contrast);
 }
 
@@ -500,7 +501,7 @@ $pixel-size: 7.5%;
   background: rgba(255, 255, 255, 0.05);
 
   @include md {
-    min-height: 55px;
+    min-height: 57px;
   }
 }
 
@@ -537,8 +538,10 @@ $pixel-size: 7.5%;
   }
 
   // Debug
-  // color: var(--light-blue);
-  // position: relative;
+  .debug & {
+    color: var(--light-blue);
+    position: relative;
+  }
 }
 
 .editor__pre {

@@ -1,30 +1,33 @@
-import '../css/pulsar.scss';
+import { calculateGrid } from './calculate';
+import { Grid } from '../grid';
 
-import { Params } from './lib/types';
+import debug from './debug';
 
-import { $autoplay, Controls } from './lib/controls';
-import { calculateGrid } from './lib/calculate';
-import { Editor } from './lib/editor';
-import { Grid } from './grid';
-import { Tutorial } from './lib/tutorial';
-
-import './lib/share-button';
-import debug from './lib/debug';
+import { state } from './state';
+import { GridType } from './types';
 
 // DOM
-const $root: HTMLDivElement = document.querySelector(
-  '.pulsar'
-) as HTMLDivElement;
-const $playPause: HTMLButtonElement = document.querySelector(
-  '.play-pause'
-) as HTMLButtonElement;
-const $toggleUIButtons: HTMLButtonElement[] = [
+const $root = document.querySelector('.pulsar') as HTMLElement;
+const $playPause = document.querySelector('.play-pause') as HTMLButtonElement;
+const $toggleUIButtons = [
   ...(document.querySelectorAll('.toggle-ui') as NodeListOf<HTMLButtonElement>),
 ];
+
+// Toggle UI
+$toggleUIButtons.forEach(($toggleUI) => {
+  $toggleUI.addEventListener('click', () => {
+    document.body.classList.toggle('ui-hidden');
+  });
+});
+
+export const $autoplay = document.querySelector(
+  'input[name=autoplay]'
+) as HTMLInputElement;
 
 export class Pulsar {
   // Animation
   isPlaying: boolean = false;
+  wasPlaying: boolean = false;
   raf: number = 0;
   time: number = 0;
   lastRestart = Date.now();
@@ -36,41 +39,23 @@ export class Pulsar {
 
   // Modules
   grid: Grid;
-  editor: Editor;
-  controls: Controls;
 
   constructor() {
-    this.editor = new Editor();
-
-    this.controls = new Controls((params: Params, name: string) => {
-      if (name === 'grid') {
-        this.grid.update(params.grid);
-      } else if (name === 'code') {
-        if (this.isPlaying) {
-          // Make sure to start animation when user changes code
-          // cause it can be paused on error
-          this.play();
-        }
-      }
-
-      // If the animation is paused, draw once when any of the params change
-      if (!this.isPlaying) {
-        this.draw();
-      }
-    });
-
-    this.grid = new Grid(this.controls.params.grid);
-
-    new Tutorial(this);
+    this.grid = new Grid(state.grid);
 
     // Autoplay on load
     this.isPlaying = $autoplay.checked;
 
-    if (this.isPlaying) {
-      this.play();
-    } else {
-      this.draw();
-    }
+    state.onChange('grid', (grid) => {
+      this.grid.update(grid as GridType);
+      this.playOrDraw();
+    });
+
+    state.onChange('animate', this.playOrDraw);
+
+    state.onChange('code', () => {
+      this.playOrDraw();
+    });
 
     // Play/pause button
     $playPause.addEventListener('click', () => {
@@ -81,17 +66,18 @@ export class Pulsar {
       }
     });
 
-    // Toggle UI
-    $toggleUIButtons.forEach(($toggleUI) => {
-      $toggleUI.addEventListener('click', () => {
-        document.body.classList.toggle('ui-hidden');
-      });
-    });
-
     // Pause when tab is hidden
     window.addEventListener('visibilitychange', () => {
+      // Pause when tab is hidden
       if (document.visibilityState === 'hidden') {
+        // Save if animation was playing
+        this.wasPlaying = this.isPlaying;
         this.pause();
+      } else if (document.visibilityState === 'visible') {
+        // When tab is visible again, resume animation if it was playing
+        if (this.wasPlaying) {
+          this.play();
+        }
       }
     });
   }
@@ -105,14 +91,14 @@ export class Pulsar {
       classes.push('is-paused');
     }
 
-    if (this.editor.error) {
-      classes.push('has-error');
-    }
-
     $root.setAttribute('class', classes.join(' '));
   }
 
   play() {
+    if (this.isPlaying) {
+      return;
+    }
+
     this.isPlaying = true;
     this.lastRestart = Date.now();
 
@@ -148,17 +134,18 @@ export class Pulsar {
     this.updateRootClass();
   }
 
-  async draw() {
-    if (this.editor.error) {
-      this.editor.showError(this.editor.error);
+  draw = async () => {
+    cancelAnimationFrame(this.raf);
+
+    if (state.error !== '') {
       this.pauseOnError();
-      return false;
+      return;
     }
 
     const response = await calculateGrid(
-      this.grid.pixels,
+      this.grid.points,
       this.timeSinceLastRestart,
-      this.controls.params.code
+      state.code
     );
 
     // FPS
@@ -173,20 +160,17 @@ export class Pulsar {
     }
 
     if (response.error) {
-      this.editor.showError(response.error);
       this.pauseOnError();
-      return false;
+      return;
     }
 
-    this.editor.hideError();
-
     response.data.forEach((value: number, index: number) => {
-      const point = this.grid.pixels[index];
+      const $point = this.grid.$points[index];
 
       // Not every grid type has the same number of points.
       // Therefore when the grid is changed multiple times in a single requestAnimationFrame,
       // we need to check if the point exists
-      if (!point) {
+      if (!$point) {
         return;
       }
 
@@ -195,33 +179,37 @@ export class Pulsar {
       // Avoiding division by zero
       let z = (value === 0 ? 1000 : (1 - 1 / value) * PERSPECTIVE).toFixed(2);
 
-      if (this.controls.params.animate === 'scale') {
-        point.$element.style.transform = `perspective(${PERSPECTIVE}px) translateZ(${z}px)`;
-        point.$element.style.opacity = '';
-      } else if (this.controls.params.animate === 'opacity') {
-        point.$element.style.opacity = value.toFixed(2);
-        point.$element.style.transform = '';
+      if (state.animate === 'scale') {
+        $point.style.transform = `perspective(${PERSPECTIVE}px) translateZ(${z}px)`;
+        $point.style.opacity = '';
+      } else if (state.animate === 'opacity') {
+        $point.style.opacity = value.toFixed(2);
+        $point.style.transform = '';
       } else {
-        point.$element.style.transform = `perspective(${PERSPECTIVE}px) translateZ(${z}px)`;
-        point.$element.style.opacity = value.toFixed(2);
+        $point.style.transform = `perspective(${PERSPECTIVE}px) translateZ(${z}px)`;
+        $point.style.opacity = value.toFixed(2);
       }
     });
 
     this.updateRootClass();
 
-    return true;
-  }
-
-  animate = async () => {
-    this.timeSinceLastRestart =
-      this.time + (Date.now() - this.lastRestart) / 200;
-
-    const drawNext = await this.draw();
-
-    if (drawNext && this.isPlaying) {
+    if (this.isPlaying) {
       this.raf = requestAnimationFrame(this.animate);
     }
   };
-}
 
-new Pulsar();
+  animate = () => {
+    this.timeSinceLastRestart =
+      this.time + (Date.now() - this.lastRestart) / 200;
+
+    this.draw();
+  };
+
+  playOrDraw = () => {
+    if (this.isPlaying) {
+      this.animate();
+    } else {
+      this.draw();
+    }
+  };
+}

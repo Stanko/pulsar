@@ -1,11 +1,10 @@
-import type { Pulsar } from '../pulsar';
-import { GridType, AnimationType } from './types';
+import { Pulsar } from './pulsar';
+import { state } from './state';
+import { GridType, AnimateType } from './types';
 
-const $next: HTMLButtonElement = document.querySelector(
-  '.tutorial'
-) as HTMLButtonElement;
+const $next = document.querySelector('.tutorial') as HTMLButtonElement;
 
-const $introText: HTMLParagraphElement = document.querySelector(
+const $introText = document.querySelector(
   '.intro-text'
 ) as HTMLParagraphElement;
 
@@ -15,7 +14,7 @@ const steps: {
   code: string;
   text: string;
   grid?: GridType;
-  animate?: AnimationType;
+  animate?: AnimateType;
 }[] = [
   {
     text: 'Pulsar allows you to create animations using code.',
@@ -24,7 +23,7 @@ const steps: {
     animate: 'scale',
   },
   {
-    text: 'Write code that returns a value between 0 and 1 (try changing it).',
+    text: 'Write code that returns a value between 0 and 1. Try changing the code below.',
     code: '0.5 ',
     grid: 'classic',
     animate: 'scale',
@@ -42,7 +41,7 @@ const steps: {
     animate: 'scale',
   },
   {
-    text: 'You can slow down the animation by multiplying the "t" and make it loop using "%" operator.',
+    text: 'You can speed up or slow down the animation by multiplying the "t". To make it loop use the "%" operator.',
     code: '(t * 0.1) % 1',
     grid: 'classic',
     animate: 'scale',
@@ -55,7 +54,7 @@ const steps: {
   },
   {
     text: 'Parameter "i" is the index of the pixel in the grid.',
-    code: 'i / 169',
+    code: 'i % 2',
   },
   {
     text: 'You can use any of the mathematical functions available in JavaScript like "cos" or "sqrt".',
@@ -107,9 +106,10 @@ const steps: {
 
 export class Tutorial {
   constructor(pulsar: Pulsar) {
-    steps[steps.length - 1].code = pulsar.controls.params.code;
-    steps[steps.length - 1].grid = pulsar.controls.params.grid;
-    steps[steps.length - 1].animate = pulsar.controls.params.animate;
+    // Save the initial state, so it can be restored when the tutorial is done
+    steps[steps.length - 1].code = state.code;
+    steps[steps.length - 1].grid = state.grid;
+    steps[steps.length - 1].animate = state.animate;
 
     $next.addEventListener('click', () => {
       if (step === null) {
@@ -128,21 +128,16 @@ export class Tutorial {
       const data = steps[step];
 
       $introText.innerHTML = data.text;
-      pulsar.editor.update(data.code);
+      state.updateCode(data.code);
 
       if (data.grid || data.animate) {
-        if (data.grid && pulsar.grid.type !== data.grid) {
-          pulsar.controls.params.grid = data.grid;
-          pulsar.grid.update(data.grid);
+        if (data.grid) {
+          state.updateRadio('grid', data.grid);
         }
 
         if (data.animate) {
-          pulsar.controls.params.animate = data.animate;
+          state.updateRadio('animate', data.animate);
         }
-
-        pulsar.controls.updateURL();
-        pulsar.controls.updateParamsFromURL();
-        pulsar.controls.updateInputs();
       }
 
       if (!pulsar.isPlaying) {

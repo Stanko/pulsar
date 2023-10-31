@@ -49,7 +49,7 @@ const MATH_PROPS = [
 ].join(', ');
 
 onmessage = function (e: MessageEvent) {
-  const { grid, t, userCode } = e.data as WorkerRequest;
+  const { grid, t, userCode, id } = e.data as WorkerRequest;
 
   const data = [];
 
@@ -62,7 +62,7 @@ onmessage = function (e: MessageEvent) {
       'noise',
       `"use strict"; const { ${MATH_PROPS} } = Math;
       let fn = () => ${userCode};
-      return fn();`
+      return fn()`
     ) as GetPointValue;
 
     for (let i = 0; i < grid.length; i++) {
@@ -81,8 +81,10 @@ onmessage = function (e: MessageEvent) {
 
       if (typeof value !== 'number') {
         postMessage({
+          id,
           error: 'Return value is not a number',
         });
+        return;
       }
 
       // Cap value to 0-1
@@ -92,10 +94,12 @@ onmessage = function (e: MessageEvent) {
     }
 
     postMessage({
+      id,
       data,
     });
   } catch (e) {
     postMessage({
+      id,
       error: (e as Error).message,
     });
   }

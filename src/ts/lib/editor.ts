@@ -1,5 +1,10 @@
 // ----- Constants ----- //
 
+import { calculateGrid } from './calculate';
+import { decodeCode } from './url';
+import { state } from './state';
+import { randomExample } from './examples';
+
 const forbiddenWords = [
   'fetch',
   'import',
@@ -40,6 +45,8 @@ const forbiddenWords = [
   'debugger',
 ];
 
+const CODE_MAX_LENGTH = 300;
+
 // Highlighting code is taken from this Stack Overflow answer:
 // https://stackoverflow.com/a/41885674
 const tokens = {
@@ -56,74 +63,111 @@ const tokens = {
   curly: /(\{|\})/g,
 };
 
-export class Editor {
-  $textarea: HTMLTextAreaElement;
-  $pre: HTMLPreElement;
-  $error: HTMLDivElement;
+export const $editor = document.querySelector(
+  '.editor__textarea'
+) as HTMLTextAreaElement;
+export const $error = document.querySelector(
+  '.editor__error'
+) as HTMLDivElement;
+const $pre = document.querySelector('.editor__pre') as HTMLPreElement;
 
-  value: string = '';
-  error: string = '';
+const DUMMY_GRID = [
+  {
+    x: 0,
+    y: 0,
+  },
+];
+
+export class Editor {
+  timeout: number = 0;
 
   constructor() {
-    this.$pre = document.querySelector('.editor__pre') as HTMLPreElement;
-    this.$error = document.querySelector('.editor__error') as HTMLDivElement;
-    this.$textarea = document.querySelector(
-      '.editor__textarea'
-    ) as HTMLTextAreaElement;
+    $editor.addEventListener('input', this.validate);
+    $editor.addEventListener('change', this.validate);
 
-    this.$textarea.addEventListener('input', this.validate);
-    this.$textarea.addEventListener('change', this.validate);
+    this.updateFromURL();
 
-    this.validate();
-
-    this.$textarea.addEventListener('keydown', (e) => {
+    $editor.addEventListener('keydown', (e) => {
       if (e.key == 'Enter') {
         e.preventDefault();
       }
     });
+
+    state.onChange('code', (value: string) => this.updateValue(value));
   }
 
+  // Only updates the value of the textarea, doesn't update the global state
+  private updateValue(code: string) {
+    $editor.value = code;
+    this.highlightCode();
+  }
+
+  // Updates the value of the textarea and the global state
   update(code: string) {
-    this.$textarea.value = code;
+    $editor.value = code;
     this.validate();
-    this.$textarea.dispatchEvent(new Event('input'));
   }
 
-  validate = () => {
-    const value = this.$textarea.value.trim();
+  updateFromURL() {
+    const URLParams = new URLSearchParams(window.location.search);
+    const value = URLParams.get('code') || '';
+
+    const code = decodeCode(value) || randomExample.code;
+
+    if (code.length > CODE_MAX_LENGTH) {
+      this.update('Code in the URL is too long.');
+    } else {
+      this.update(code);
+    }
+  }
+
+  validate = async () => {
+    clearTimeout(this.timeout);
+
+    const value = $editor.value.trim();
 
     this.highlightCode();
 
+    if (value === '') {
+      this.showError('Type some code to get started.');
+      return;
+    }
+
     for (const word of forbiddenWords) {
       if (value.includes(word)) {
-        const error = `Let's play nice, no usage of "${word}" allowed.`;
-        this.error = error;
+        this.showError(`Let's play nice, no usage of "${word}" allowed.`);
         return;
       }
     }
 
-    this.error = '';
+    const data = await calculateGrid(DUMMY_GRID, 0, value);
 
-    this.value = value;
+    if (data.error) {
+      this.showError(data.error);
+      return;
+    }
+
+    this.hideError();
+    state.updateCode(value);
   };
 
   highlightCode() {
-    let code = this.$textarea.value;
+    let code = $editor.value;
 
     for (const [key, token] of Object.entries(tokens)) {
       code = code.replace(token, `<i class="${key}">$1</i>`);
     }
 
-    this.$pre.innerHTML = code;
+    $pre.innerHTML = code;
   }
 
   showError(error: string) {
-    this.error = error;
-    this.$error.innerHTML = error;
+    state.error = error;
+    $error.innerHTML = error;
   }
 
   hideError() {
-    this.error = '';
-    this.$error.innerHTML = '';
+    state.error = '';
+    $error.innerHTML = '';
   }
 }

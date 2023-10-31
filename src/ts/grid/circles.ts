@@ -10,8 +10,8 @@ const SVG_SIZE = 100;
 export function generateCirclesGrid(size: number): Pixel[] {
   const points: Pixel[] = [];
 
-  for (let x = -size; x <= size; x += 1) {
-    for (let y = -size; y <= size; y += 1) {
+  for (let y = -size; y <= size; y += 1) {
+    for (let x = -size; x <= size; x += 1) {
       const $element = create({ width: SVG_SIZE, height: SVG_SIZE });
 
       const $circle = circle(

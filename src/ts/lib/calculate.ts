@@ -1,27 +1,29 @@
-import { Pixel, WorkerResponse } from './types';
+import { Point, WorkerResponse } from './types';
 
 export const worker = new Worker(new URL('./worker.ts', import.meta.url));
 
 // ----- Worker ----- //
 
-let resolveMethod: (response: WorkerResponse) => void;
+let resolvers: Record<string, (response: WorkerResponse) => void> = {};
 
 worker.addEventListener('message', (e) => {
-  resolveMethod(e.data);
+  resolvers[e.data.id](e.data);
+  delete resolvers[e.data.id];
 });
 
 export async function calculateGrid(
-  grid: Pixel[],
+  grid: Point[],
   t: number,
   userCode: string
 ): Promise<WorkerResponse> {
   return new Promise<WorkerResponse>((resolve) => {
-    resolveMethod = resolve;
+    const id = Math.random().toString(16) + Date.now().toString(16);
+
+    resolvers[id] = resolve;
 
     worker.postMessage({
-      grid: grid.map(({ x, y }) => {
-        return { x, y };
-      }),
+      id,
+      grid,
       t,
       userCode,
     });

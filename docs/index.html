@@ -7,6 +7,7 @@
 
   <title>Pulsar</title>
   <meta name="description" content="Micro creative coding playground">
+
   <meta content="https://muffinman.io/pulsar/pulsar.png" property="twitter:image">
   <meta content="https://muffinman.io/pulsar/pulsar.png" property="og:image">
 
@@ -14,12 +15,12 @@
   <link href="https://muffinman.io/favicon/purple/icon.svg" rel="icon" type="image/svg+xml">
   <link href="https://muffinman.io/favicon/purple/icon-180.png" rel="apple-touch-icon">
   <link href="https://muffinman.io/favicon/purple/manifest.webmanifest" rel="manifest">
-  <script type="module" crossorigin src="/pulsar/assets/index-943b2073.js"></script>
-  <link rel="stylesheet" href="/pulsar/assets/index-f3b4f018.css">
+  <script type="module" crossorigin src="/pulsar/assets/index-e552c916.js"></script>
+  <link rel="stylesheet" href="/pulsar/assets/index-955a1911.css">
 </head>
 
 <body>
-  <div class="pulsar is-paused" id="debug">
+  <main class="pulsar is-paused">
     <div class="animation-wrapper">
       <div class="animation">
         <div class="pixel-wrapper"></div>
@@ -87,7 +88,7 @@
         <pre class="editor__prefix">(x,y,t,i) => </pre>
         <div class="editor__wrapper">
           <pre class="editor__pre" aria-hidden="true"></pre>
-          <textarea id="editor__textarea" maxlength="200" name="code" class="editor__textarea"
+          <textarea id="editor__textarea" maxlength="300" name="code" class="editor__textarea"
             spellcheck="false"></textarea>
         </div>
         <div class="editor__error"></div>
@@ -212,7 +213,7 @@
       </label>
 
       <div class="bottom">
-        <a href="." class="reset button">
+        <a href="/pulsar/" class="random-example button">
           <span>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"
               aria-hidden="true">
@@ -221,7 +222,7 @@
               <path fill-rule="evenodd"
                 d="M8 3c-1.552 0-2.94.707-3.857 1.818a.5.5 0 1 1-.771-.636A6.002 6.002 0 0 1 13.917 7H12.9A5.002 5.002 0 0 0 8 3zM3.1 9a5.002 5.002 0 0 0 8.757 2.182.5.5 0 1 1 .771.636A6.002 6.002 0 0 1 2.083 9H3.1z" />
             </svg>
-            Reset
+            Random example
           </span>
         </a>
 
@@ -251,10 +252,9 @@
             Error happened, please try again
           </span>
         </button>
-
       </div>
     </div>
-  </div>
+  </main>
 
   <button class="toggle-ui toggle-ui__absolute icon-button">
     <div class="toggle-ui__hide-label" aria-label="Hide controls">
@@ -273,7 +273,6 @@
     </div>
   </button>
 
-  
   
 
 </body>

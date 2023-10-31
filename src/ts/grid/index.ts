@@ -1,4 +1,4 @@
-import { GridType, Pixel } from '../lib/types';
+import { GridType, Pixel, Point } from '../lib/types';
 
 import { generateHexGrid } from './hex';
 import { generateTriangleGrid } from './triangles';
@@ -10,12 +10,13 @@ const gridMap: Record<string, () => Pixel[]> = {
   triangular: () => generateTriangleGrid(8, 5),
 };
 
+const $grid = document.querySelector('.pixel-wrapper') as HTMLDivElement;
+
 export class Grid {
-  $element: HTMLDivElement = document.querySelector(
-    '.pixel-wrapper'
-  ) as HTMLDivElement;
-  pixels: Pixel[] = [];
   type: GridType = 'classic';
+
+  points: Point[] = [];
+  $points: SVGElement[] = [];
 
   constructor(type: GridType = 'classic') {
     this.type = type;
@@ -24,12 +25,19 @@ export class Grid {
 
   update(type: GridType = 'classic') {
     this.type = type;
-    this.pixels = gridMap[type]();
+    const data = gridMap[type]();
 
-    this.$element.replaceChildren(
-      ...this.pixels.map((point) => point.$element)
-    );
+    this.points = data.map((point) => {
+      return {
+        x: point.x,
+        y: point.y,
+      };
+    });
 
-    this.$element.dataset.variant = type;
+    this.$points = data.map((point) => point.$element);
+
+    $grid.replaceChildren(...this.$points);
+
+    $grid.dataset.variant = type;
   }
 }
