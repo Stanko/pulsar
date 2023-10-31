@@ -46,6 +46,8 @@ export class Pulsar {
     // Autoplay on load
     this.isPlaying = $autoplay.checked;
 
+    this.playOrDraw();
+
     state.onChange('grid', (grid) => {
       this.grid.update(grid as GridType);
       this.playOrDraw();
