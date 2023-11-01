@@ -57,13 +57,10 @@ class State {
   }
 
   updateCode(code: string) {
-    if (code !== this.code) {
-      this.code = code;
+    this.code = code;
+    this.handlers['code'].forEach((fn) => fn(code));
 
-      this.handlers['code'].forEach((fn) => fn(code));
-
-      updateURLQuery({ code });
-    }
+    updateURLQuery({ code });
   }
 }
 
