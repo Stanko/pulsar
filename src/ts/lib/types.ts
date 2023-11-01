@@ -63,3 +63,11 @@ export type WorkerResponse = {
 };
 
 export type StateChangeHandler = (value: string) => void;
+
+export type GridItem = {
+  x: number;
+  y: number;
+  color: string;
+  r: number;
+  angleOffset?: number;
+};

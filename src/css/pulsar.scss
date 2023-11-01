@@ -242,6 +242,15 @@ pre {
 
 // ----- Animation ----- //
 
+.canvas {
+  display: block;
+  width: 100%;
+
+  @include lg {
+    margin-top: -10%;
+  }
+}
+
 $pixel-size: 7.5%;
 
 .animation-wrapper {

@@ -1,10 +1,11 @@
 import { calculateGrid } from './calculate';
-import { Grid } from '../grid';
+import { Grid } from '../canvas-grid';
 
 import debug from './debug';
 
 import { state } from './state';
 import { GridType } from './types';
+import { drawGrid } from '../canvas-grid/canvas';
 
 // DOM
 const $root = document.querySelector('.pulsar') as HTMLElement;
@@ -166,32 +167,35 @@ export class Pulsar {
       return;
     }
 
-    response.data.forEach((value: number, index: number) => {
-      const $point = this.grid.$points[index];
+    drawGrid(this.grid.points, response.data);
 
-      // Not every grid type has the same number of points.
-      // Therefore when the grid is changed multiple times in a single requestAnimationFrame,
-      // we need to check if the point exists
-      if (!$point) {
-        return;
-      }
+    // SVG renderer
+    // response.data.forEach((value: number, index: number) => {
+    //   const $point = this.grid.$points[index];
 
-      const PERSPECTIVE = 100;
+    //   // Not every grid type has the same number of points.
+    //   // Therefore when the grid is changed multiple times in a single requestAnimationFrame,
+    //   // we need to check if the point exists
+    //   if (!$point) {
+    //     return;
+    //   }
 
-      // Avoiding division by zero
-      let z = (value === 0 ? 1000 : (1 - 1 / value) * PERSPECTIVE).toFixed(2);
+    //   const PERSPECTIVE = 100;
 
-      if (state.animate === 'scale') {
-        $point.style.transform = `perspective(${PERSPECTIVE}px) translateZ(${z}px)`;
-        $point.style.opacity = '';
-      } else if (state.animate === 'opacity') {
-        $point.style.opacity = value.toFixed(2);
-        $point.style.transform = '';
-      } else {
-        $point.style.transform = `perspective(${PERSPECTIVE}px) translateZ(${z}px)`;
-        $point.style.opacity = value.toFixed(2);
-      }
-    });
+    //   // Avoiding division by zero
+    //   let z = (value === 0 ? 1000 : (1 - 1 / value) * PERSPECTIVE).toFixed(2);
+
+    //   if (state.animate === 'scale') {
+    //     $point.style.transform = `perspective(${PERSPECTIVE}px) translateZ(${z}px)`;
+    //     $point.style.opacity = '';
+    //   } else if (state.animate === 'opacity') {
+    //     $point.style.opacity = value.toFixed(2);
+    //     $point.style.transform = '';
+    //   } else {
+    //     $point.style.transform = `perspective(${PERSPECTIVE}px) translateZ(${z}px)`;
+    //     $point.style.opacity = value.toFixed(2);
+    //   }
+    // });
 
     this.updateRootClass();
 
