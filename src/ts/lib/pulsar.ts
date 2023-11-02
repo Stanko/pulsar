@@ -1,7 +1,7 @@
 import { calculateGrid } from './calculate';
 import { Grid } from '../canvas-grid';
 
-import debug from './debug';
+import debug, { log } from './debug';
 
 import { state } from './state';
 import { GridType } from './types';
@@ -21,9 +21,14 @@ $toggleUIButtons.forEach(($toggleUI) => {
   });
 });
 
-export const $autoplay = document.querySelector(
+// Autoplay checkbox
+const $autoplay = document.querySelector(
   'input[name=autoplay]'
 ) as HTMLInputElement;
+
+// FPS meter elements
+const $fps = document.querySelector('.fps') as HTMLDivElement;
+const $fpsValue = document.querySelector('.fps__value') as HTMLPreElement;
 
 export class Pulsar {
   // Animation
@@ -36,6 +41,7 @@ export class Pulsar {
 
   // FPS
   fps: number = 0;
+  fpsHistory: number[] = [];
   fpsStartTime: number = Date.now();
 
   // Modules
@@ -74,11 +80,13 @@ export class Pulsar {
       // Pause when tab is hidden
       if (document.visibilityState === 'hidden') {
         // Save if animation was playing
+        log('Tab went inactive');
         this.wasPlaying = this.isPlaying;
         this.pause();
       } else if (document.visibilityState === 'visible') {
         // When tab is visible again, resume animation if it was playing
         if (this.wasPlaying) {
+          log('Tab is active again - resuming');
           this.play();
         }
       }
@@ -99,8 +107,11 @@ export class Pulsar {
 
   play() {
     if (this.isPlaying) {
+      log('Play, already playing');
       return;
     }
+
+    log('Play');
 
     this.isPlaying = true;
     this.lastRestart = Date.now();
@@ -119,6 +130,7 @@ export class Pulsar {
   pauseOnError() {
     cancelAnimationFrame(this.raf);
     this.time = this.timeSinceLastRestart;
+    log('Pause on error');
 
     // FPS
     if (debug) {
@@ -130,6 +142,7 @@ export class Pulsar {
   }
 
   pause() {
+    log('Pause');
     this.isPlaying = false;
     this.time = this.timeSinceLastRestart;
 
@@ -156,7 +169,17 @@ export class Pulsar {
       this.fps++;
 
       if (Date.now() - this.fpsStartTime > 1000) {
-        console.log('fps', this.fps);
+        this.fpsHistory.push(this.fps);
+        if (this.fpsHistory.length > 60) {
+          this.fpsHistory.shift();
+        }
+
+        $fps.innerHTML = this.fpsHistory
+          .map((fps) => {
+            return `<div class="fps__bar" style="height: ${fps / 2}%"></div>`;
+          })
+          .join('\n');
+        $fpsValue.innerHTML = this.fps.toString();
         this.fpsStartTime = Date.now();
         this.fps = 0;
       }
@@ -213,8 +236,10 @@ export class Pulsar {
 
   playOrDraw = () => {
     if (this.isPlaying) {
+      log('Play or draw - start/resume animation');
       this.animate();
     } else {
+      log('Play or draw - draw a single frame');
       this.draw();
     }
   };

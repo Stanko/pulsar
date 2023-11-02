@@ -10,8 +10,6 @@ const gridMap: Record<string, () => GridItem[]> = {
   triangular: () => generateTriangleGrid(8, 5),
 };
 
-// const $grid = document.querySelector('.pixel-wrapper') as HTMLDivElement;
-
 export class Grid {
   type: GridType = 'classic';
 
@@ -25,6 +23,5 @@ export class Grid {
   update(type: GridType = 'classic') {
     this.type = type;
     this.points = gridMap[type]();
-    // $grid.dataset.variant = type;
   }
 }

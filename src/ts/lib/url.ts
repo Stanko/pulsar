@@ -1,3 +1,5 @@
+import { log } from './debug';
+
 type QueryParams = {
   code?: string;
   grid?: string;
@@ -41,6 +43,8 @@ export function updateURLQuery(params: QueryParams) {
 
   const queryString = URLParams.toString();
   const url = `${window.location.origin}${window.location.pathname}?${queryString}`;
+
+  log('Updated URL:', JSON.stringify(params));
 
   window.history.replaceState(null, '', url);
 }

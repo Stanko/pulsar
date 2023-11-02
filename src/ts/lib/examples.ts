@@ -1,4 +1,6 @@
-const examples = [
+import { Example } from './types';
+
+const examples: Example[] = [
   {
     code: '(cos(x * t / 5) + sin(y * t / 5)) / 2',
   },
@@ -52,5 +54,12 @@ const examples = [
   },
 ];
 
-export const randomExample =
-  examples[Math.floor(Math.random() * examples.length)];
+export function getRandomExample(): Example {
+  return {
+    grid: 'classic',
+    animate: 'scale',
+    ...examples[Math.floor(Math.random() * examples.length)],
+  };
+}
+
+export const randomExample = getRandomExample();

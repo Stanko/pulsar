@@ -50,10 +50,10 @@ export type AvailableParams = 'grid' | 'animate' | 'code';
 export type GridType = 'classic' | 'hex' | 'triangular';
 export type AnimateType = 'both' | 'scale' | 'opacity';
 
-export type Params = {
+export type Example = {
   grid?: GridType;
   animate?: AnimateType;
-  code?: string;
+  code: string;
 };
 
 export type WorkerResponse = {

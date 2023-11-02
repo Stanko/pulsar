@@ -1,3 +1,4 @@
+import { log } from './debug';
 import {
   AnimateType,
   GridType,
@@ -37,8 +38,10 @@ class State {
   updateRadio(param: AvailableParams, value: string) {
     if (this[param] !== value) {
       if (param === 'animate') {
+        log('Animate changed:', value);
         this.animate = value as AnimateType;
       } else if (param === 'grid') {
+        log('Grid changed:', value);
         this.grid = value as GridType;
       }
 
@@ -57,6 +60,7 @@ class State {
   }
 
   updateCode(code: string) {
+    log('Code changed:', code);
     this.code = code;
     this.handlers['code'].forEach((fn) => fn(code));
     updateURLQuery({ code });
