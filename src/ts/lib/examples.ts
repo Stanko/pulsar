@@ -47,6 +47,9 @@ const examples = [
     code: '1 - (((x + 3) * (x + 4) + y + t * 0.3 * (1 + x * x % 5) * 3) % 36) / 12',
     animate: 'opacity',
   },
+  {
+    code: '1 / abs((x + y) + (t * 4) % 70 - 35)',
+  },
 ];
 
 export const randomExample =

@@ -9,4 +9,10 @@ if (debug) {
   document.body.classList.add('debug');
 }
 
+export function log(...args: any[]) {
+  if (debug) {
+    console.log(...args);
+  }
+}
+
 export default debug;

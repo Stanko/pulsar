@@ -98,13 +98,18 @@ export class Editor {
 
   // Only updates the value of the textarea, doesn't update the global state
   private updateValue(code: string) {
-    $editor.value = code;
-    this.highlightCode();
+    if ($editor.value !== code) {
+      $editor.value = code;
+      this.highlightCode();
+    }
   }
 
   // Updates the value of the textarea and the global state
   update(code: string) {
-    $editor.value = code;
+    if ($editor.value !== code) {
+      $editor.value = code;
+    }
+
     this.validate();
   }
 
