@@ -20,6 +20,32 @@
   }
 }
 
+// ----- FPS meter ----- //
+
+.fps {
+  display: flex;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 40px;
+  width: 60px;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.fps__bar {
+  flex: 1px 0 0;
+  background-color: var(--green);
+}
+
+.fps__value {
+  position: fixed;
+  top: 40px;
+  left: 0;
+  font-size: 12px;
+  padding: 2px 4px;
+}
+
 // ----- Variables ----- //
 
 :root {
@@ -241,6 +267,15 @@ pre {
 }
 
 // ----- Animation ----- //
+
+.canvas {
+  display: block;
+  width: 100%;
+
+  @include lg {
+    margin-top: -10%;
+  }
+}
 
 $pixel-size: 7.5%;
 
@@ -533,14 +568,14 @@ $pixel-size: 7.5%;
   caret-color: white;
   resize: none;
 
-  .editor__textarea:focus {
-    outline: 4px solid rgba(255, 255, 255, 0.1);
-  }
-
   // Debug
   .debug & {
-    color: var(--light-blue);
+    color: var(--fg);
     position: relative;
+
+    &:not(:focus) {
+      outline: 1px solid rgba(255, 255, 255, 0.1);
+    }
   }
 }
 

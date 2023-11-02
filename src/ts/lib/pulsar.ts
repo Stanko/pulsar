@@ -1,10 +1,11 @@
 import { calculateGrid } from './calculate';
-import { Grid } from '../grid';
+import { Grid } from '../canvas-grid';
 
-import debug from './debug';
+import debug, { log } from './debug';
 
 import { state } from './state';
 import { GridType } from './types';
+import { drawGrid } from '../canvas-grid/canvas';
 
 // DOM
 const $root = document.querySelector('.pulsar') as HTMLElement;
@@ -20,9 +21,14 @@ $toggleUIButtons.forEach(($toggleUI) => {
   });
 });
 
-export const $autoplay = document.querySelector(
+// Autoplay checkbox
+const $autoplay = document.querySelector(
   'input[name=autoplay]'
 ) as HTMLInputElement;
+
+// FPS meter elements
+const $fps = document.querySelector('.fps') as HTMLDivElement;
+const $fpsValue = document.querySelector('.fps__value') as HTMLPreElement;
 
 export class Pulsar {
   // Animation
@@ -35,6 +41,7 @@ export class Pulsar {
 
   // FPS
   fps: number = 0;
+  fpsHistory: number[] = [];
   fpsStartTime: number = Date.now();
 
   // Modules
@@ -73,11 +80,13 @@ export class Pulsar {
       // Pause when tab is hidden
       if (document.visibilityState === 'hidden') {
         // Save if animation was playing
+        log('Tab went inactive');
         this.wasPlaying = this.isPlaying;
         this.pause();
       } else if (document.visibilityState === 'visible') {
         // When tab is visible again, resume animation if it was playing
         if (this.wasPlaying) {
+          log('Tab is active again - resuming');
           this.play();
         }
       }
@@ -98,8 +107,11 @@ export class Pulsar {
 
   play() {
     if (this.isPlaying) {
+      log('Play, already playing');
       return;
     }
+
+    log('Play');
 
     this.isPlaying = true;
     this.lastRestart = Date.now();
@@ -118,6 +130,7 @@ export class Pulsar {
   pauseOnError() {
     cancelAnimationFrame(this.raf);
     this.time = this.timeSinceLastRestart;
+    log('Pause on error');
 
     // FPS
     if (debug) {
@@ -129,6 +142,7 @@ export class Pulsar {
   }
 
   pause() {
+    log('Pause');
     this.isPlaying = false;
     this.time = this.timeSinceLastRestart;
 
@@ -155,7 +169,17 @@ export class Pulsar {
       this.fps++;
 
       if (Date.now() - this.fpsStartTime > 1000) {
-        console.log('fps', this.fps);
+        this.fpsHistory.push(this.fps);
+        if (this.fpsHistory.length > 60) {
+          this.fpsHistory.shift();
+        }
+
+        $fps.innerHTML = this.fpsHistory
+          .map((fps) => {
+            return `<div class="fps__bar" style="height: ${fps / 2}%"></div>`;
+          })
+          .join('\n');
+        $fpsValue.innerHTML = this.fps.toString();
         this.fpsStartTime = Date.now();
         this.fps = 0;
       }
@@ -166,32 +190,35 @@ export class Pulsar {
       return;
     }
 
-    response.data.forEach((value: number, index: number) => {
-      const $point = this.grid.$points[index];
+    drawGrid(this.grid.points, response.data);
 
-      // Not every grid type has the same number of points.
-      // Therefore when the grid is changed multiple times in a single requestAnimationFrame,
-      // we need to check if the point exists
-      if (!$point) {
-        return;
-      }
+    // SVG renderer
+    // response.data.forEach((value: number, index: number) => {
+    //   const $point = this.grid.$points[index];
 
-      const PERSPECTIVE = 100;
+    //   // Not every grid type has the same number of points.
+    //   // Therefore when the grid is changed multiple times in a single requestAnimationFrame,
+    //   // we need to check if the point exists
+    //   if (!$point) {
+    //     return;
+    //   }
 
-      // Avoiding division by zero
-      let z = (value === 0 ? 1000 : (1 - 1 / value) * PERSPECTIVE).toFixed(2);
+    //   const PERSPECTIVE = 100;
 
-      if (state.animate === 'scale') {
-        $point.style.transform = `perspective(${PERSPECTIVE}px) translateZ(${z}px)`;
-        $point.style.opacity = '';
-      } else if (state.animate === 'opacity') {
-        $point.style.opacity = value.toFixed(2);
-        $point.style.transform = '';
-      } else {
-        $point.style.transform = `perspective(${PERSPECTIVE}px) translateZ(${z}px)`;
-        $point.style.opacity = value.toFixed(2);
-      }
-    });
+    //   // Avoiding division by zero
+    //   let z = (value === 0 ? 1000 : (1 - 1 / value) * PERSPECTIVE).toFixed(2);
+
+    //   if (state.animate === 'scale') {
+    //     $point.style.transform = `perspective(${PERSPECTIVE}px) translateZ(${z}px)`;
+    //     $point.style.opacity = '';
+    //   } else if (state.animate === 'opacity') {
+    //     $point.style.opacity = value.toFixed(2);
+    //     $point.style.transform = '';
+    //   } else {
+    //     $point.style.transform = `perspective(${PERSPECTIVE}px) translateZ(${z}px)`;
+    //     $point.style.opacity = value.toFixed(2);
+    //   }
+    // });
 
     this.updateRootClass();
 
@@ -209,8 +236,10 @@ export class Pulsar {
 
   playOrDraw = () => {
     if (this.isPlaying) {
+      log('Play or draw - start/resume animation');
       this.animate();
     } else {
+      log('Play or draw - draw a single frame');
       this.draw();
     }
   };

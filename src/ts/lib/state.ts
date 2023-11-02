@@ -1,3 +1,4 @@
+import { log } from './debug';
 import {
   AnimateType,
   GridType,
@@ -11,10 +12,6 @@ export const DEFAULT_STATE = {
   grid: 'classic',
   animate: 'scale',
 } as const;
-
-// const $editor = document.querySelector(
-//   '.editor__textarea'
-// ) as HTMLTextAreaElement;
 
 class State {
   code: string = DEFAULT_STATE.code;
@@ -37,8 +34,10 @@ class State {
   updateRadio(param: AvailableParams, value: string) {
     if (this[param] !== value) {
       if (param === 'animate') {
+        log('Animate changed:', value);
         this.animate = value as AnimateType;
       } else if (param === 'grid') {
+        log('Grid changed:', value);
         this.grid = value as GridType;
       }
 
@@ -57,9 +56,9 @@ class State {
   }
 
   updateCode(code: string) {
+    log('Code changed:', code);
     this.code = code;
     this.handlers['code'].forEach((fn) => fn(code));
-
     updateURLQuery({ code });
   }
 }

@@ -15,16 +15,26 @@
   <link href="https://muffinman.io/favicon/purple/icon.svg" rel="icon" type="image/svg+xml">
   <link href="https://muffinman.io/favicon/purple/icon-180.png" rel="apple-touch-icon">
   <link href="https://muffinman.io/favicon/purple/manifest.webmanifest" rel="manifest">
-  <script type="module" crossorigin src="/pulsar/assets/index-aa3f2e34.js"></script>
-  <link rel="stylesheet" href="/pulsar/assets/index-955a1911.css">
+  <script type="module" crossorigin src="/pulsar/assets/index-3fbfee25.js"></script>
+  <link rel="stylesheet" href="/pulsar/assets/index-4822936d.css">
 </head>
 
 <body>
+  <div class="fps">
+  </div>
+  <pre class="fps__value">
+  </pre>
   <main class="pulsar is-paused">
+    <!-- SVG renderer -->
+    <!-- 
     <div class="animation-wrapper">
       <div class="animation">
         <div class="pixel-wrapper"></div>
       </div>
+    </div> 
+    -->
+    <div class="animation-wrapper">
+      <canvas class="canvas"></canvas>
     </div>
 
     <div class="controls">
@@ -213,7 +223,7 @@
       </label>
 
       <div class="bottom">
-        <a href="/pulsar/" class="random-example button">
+        <button class="random-example button">
           <span>
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16"
               aria-hidden="true">
@@ -224,7 +234,7 @@
             </svg>
             Random example
           </span>
-        </a>
+        </button>
 
         <button class="share button">
           <span class="share__default-label">

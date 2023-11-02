@@ -4,6 +4,7 @@ import { calculateGrid } from './calculate';
 import { decodeCode } from './url';
 import { state } from './state';
 import { randomExample } from './examples';
+import { log } from './debug';
 
 const forbiddenWords = [
   'fetch',
@@ -98,13 +99,20 @@ export class Editor {
 
   // Only updates the value of the textarea, doesn't update the global state
   private updateValue(code: string) {
-    $editor.value = code;
-    this.highlightCode();
+    if ($editor.value !== code) {
+      $editor.value = code;
+      this.highlightCode();
+      log('Editor, code updated');
+    }
   }
 
   // Updates the value of the textarea and the global state
   update(code: string) {
-    $editor.value = code;
+    if ($editor.value !== code) {
+      $editor.value = code;
+      log('Editor, code updated and validated');
+    }
+
     this.validate();
   }
 
@@ -162,6 +170,7 @@ export class Editor {
   }
 
   showError(error: string) {
+    log(`Error: %c${error}`, 'color: red', 'code:', $editor.value);
     state.error = error;
     $error.innerHTML = error;
   }
