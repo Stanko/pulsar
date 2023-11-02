@@ -7,7 +7,7 @@ Micro creative coding playground.
 ## TODO
 
 - [ ] Write a blog post
-- [ ] Canvas renderer
+- [x] Canvas renderer
 - [ ] Generate a sprite
 - [ ] Explore rendering a gif or video
 
