@@ -132,7 +132,7 @@ export class Editor {
   validate = async () => {
     clearTimeout(this.timeout);
 
-    const value = $editor.value.trim();
+    const value = $editor.value;
 
     this.highlightCode();
 
