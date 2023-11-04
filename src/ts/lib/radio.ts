@@ -21,6 +21,8 @@ export class Radio {
     ];
 
     this.$inputs.forEach(($input) => {
+      $input.checked = $input.value === initialValue;
+
       $input.addEventListener('change', () => {
         state.updateRadio(this.name, $input.value as AnimateType);
       });
