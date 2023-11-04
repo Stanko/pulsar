@@ -98,11 +98,19 @@ export class Editor {
   }
 
   // Only updates the value of the textarea, doesn't update the global state
+  // It is triggered when the global state is updated from outside
   private updateValue(code: string) {
     if ($editor.value !== code) {
       $editor.value = code;
       this.highlightCode();
       log('Editor, code updated');
+
+      // Validate only if there was an error before
+      // Otherwise, when loading an example, the previous error will be kept
+      // and animation won't be played
+      if (state.error) {
+        this.validate();
+      }
     }
   }
 
@@ -155,6 +163,8 @@ export class Editor {
       return;
     }
 
+    log(state.error);
+
     this.hideError();
     state.updateCode(value);
   };
@@ -176,6 +186,7 @@ export class Editor {
   }
 
   hideError() {
+    log('Clear error');
     state.error = '';
     $error.innerHTML = '';
   }
