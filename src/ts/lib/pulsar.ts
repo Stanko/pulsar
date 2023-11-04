@@ -47,6 +47,9 @@ export class Pulsar {
   // Modules
   grid: Grid;
 
+  // Commented for now, check the comment in "playOrDraw" method below
+  // lock: boolean = false;
+
   constructor() {
     this.grid = new Grid(state.grid);
 
@@ -235,6 +238,16 @@ export class Pulsar {
   };
 
   playOrDraw = () => {
+    // This actually works, but I'm not sure if it is just an overkill
+    // Prevents calling this method more than once per animation frame
+    // if (this.lock) {
+    //   return;
+    // }
+    // this.lock = true;
+    // requestAnimationFrame(() => {
+    //   this.lock = false;
+    // });
+
     if (this.isPlaying) {
       log('Play or draw - start/resume animation');
       this.animate();

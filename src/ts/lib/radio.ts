@@ -26,6 +26,12 @@ export class Radio {
       });
     });
 
+    state.onChange(name, (value: string) => {
+      this.$inputs.forEach(($input) => {
+        $input.checked = $input.value === value;
+      });
+    });
+
     this.updateFromURL();
   }
 

@@ -44,12 +44,6 @@ class State {
       this.handlers[param].forEach((fn) => fn(value));
     }
 
-    const $input = document.querySelector(
-      `input[name=${param}][value=${value}]`
-    ) as HTMLInputElement;
-
-    $input.checked = true;
-
     updateURLQuery({
       [param]: value,
     });
@@ -60,6 +54,18 @@ class State {
     this.code = code;
     this.handlers['code'].forEach((fn) => fn(code));
     updateURLQuery({ code });
+  }
+
+  updateAll(newState: { grid: GridType; animate: AnimateType; code: string }) {
+    this.code = newState.code;
+    this.animate = newState.animate;
+    this.grid = newState.grid;
+
+    this.handlers.code.forEach((fn) => fn(this.code));
+    this.handlers.animate.forEach((fn) => fn(this.animate));
+    this.handlers.grid.forEach((fn) => fn(this.grid));
+
+    updateURLQuery(newState);
   }
 }
 

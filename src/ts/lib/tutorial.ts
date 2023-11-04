@@ -104,6 +104,11 @@ const steps: {
   },
 ];
 
+const buttonLabelMap = {
+  [steps.length - 2]: 'Finish',
+  [steps.length - 1]: 'Restart',
+};
+
 export class Tutorial {
   constructor(pulsar: Pulsar) {
     // Save the initial state, so it can be restored when the tutorial is done
@@ -118,27 +123,17 @@ export class Tutorial {
         step = (step + 1) % steps.length;
       }
 
-      if (step === steps.length - 2) {
-        $next.innerHTML = 'Finish';
-      } else if (step === steps.length - 1) {
-        $next.innerHTML = 'Restart';
-      } else {
-        $next.innerHTML = 'Next';
-      }
+      $next.innerHTML = buttonLabelMap[step] || 'Next';
+
       const data = steps[step];
 
       $introText.innerHTML = data.text;
-      state.updateCode(data.code);
 
-      if (data.grid || data.animate) {
-        if (data.grid) {
-          state.updateRadio('grid', data.grid);
-        }
-
-        if (data.animate) {
-          state.updateRadio('animate', data.animate);
-        }
-      }
+      state.updateAll({
+        grid: data.grid || 'classic',
+        animate: data.animate || 'scale',
+        code: data.code,
+      });
 
       if (!pulsar.isPlaying) {
         pulsar.play();
