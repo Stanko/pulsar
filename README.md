@@ -8,8 +8,8 @@ Micro creative coding playground.
 
 - [ ] Write a blog post
 - [x] Canvas renderer
-- [ ] Generate a sprite
-- [ ] Explore rendering a gif or video
+- [ ] ~Generate a sprite~
+- [x] Explore rendering a [gif](https://muffinman.io/pulsar/gif.html) or video
 
 ## Similar projects:
 

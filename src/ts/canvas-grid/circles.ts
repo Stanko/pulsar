@@ -1,8 +1,7 @@
 import { GridItem } from '../lib/types';
 import { getColor } from '../lib/colors';
-import { RADIUS } from './constants';
+import { RADIUS, CIRCLE_SCALE, CIRCLE_COLOR_SCALE } from './constants';
 
-const CIRCLE_SCALE = 0.88;
 const r = 0.5 * CIRCLE_SCALE;
 
 export function generateCirclesGrid(size: number): GridItem[] {
@@ -10,7 +9,7 @@ export function generateCirclesGrid(size: number): GridItem[] {
 
   for (let y = -size; y <= size; y += 1) {
     for (let x = -size; x <= size; x += 1) {
-      const color = getColor({ x, y });
+      const color = getColor({ x, y }, CIRCLE_COLOR_SCALE);
 
       points.push({
         x,

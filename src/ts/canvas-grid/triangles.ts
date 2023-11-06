@@ -1,9 +1,11 @@
 import { GridItem } from '../lib/types';
 import { getColor } from '../lib/colors';
-import { RADIUS } from './constants';
-
-const SCALE = 1.33; // Scale to fit the grid into the SVG bounds
-const TRIANGLE_SCALE = 0.8;
+import {
+  TRIANGLE_RADIUS,
+  TRIANGLE_SCALE,
+  TRIANGLE_RADIUS_SCALE,
+  TRIANGLE_COLOR_SCALE,
+} from './constants';
 
 export function generateTriangleGrid(
   columnsCount: number,
@@ -13,7 +15,7 @@ export function generateTriangleGrid(
 
   const side = 1;
   const h = (side * Math.sqrt(3)) / 2;
-  const r = (h / 3) * 2 * RADIUS;
+  const r = (h / 3) * 2 * TRIANGLE_RADIUS * TRIANGLE_SCALE;
 
   const horizontalStep = side / 2;
   const verticalStep = h;
@@ -39,12 +41,15 @@ export function generateTriangleGrid(
 
       const yLocal = isOddColumn ? h / 3 : 0;
 
-      const color = getColor({ x, y: y - yLocal }, 1 / TRIANGLE_SCALE);
+      const color = getColor(
+        { x, y: y - yLocal },
+        (1 / TRIANGLE_SCALE) * TRIANGLE_COLOR_SCALE
+      );
 
       points.push({
-        x: x * SCALE,
-        y: (y - yLocal) * SCALE,
-        r: r * TRIANGLE_SCALE * SCALE,
+        x: x * TRIANGLE_RADIUS_SCALE,
+        y: (y - yLocal) * TRIANGLE_RADIUS_SCALE,
+        r: r,
         color,
         angleOffset,
       });

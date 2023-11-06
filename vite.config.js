@@ -1,4 +1,5 @@
 /** @type {import('vite').UserConfig} */
+import { resolve } from 'path';
 
 export default {
   server: {
@@ -10,5 +11,11 @@ export default {
   build: {
     outDir: '../docs',
     emptyOutDir: true,
+    rollupOptions: {
+      input: {
+        main: resolve(__dirname, 'src', 'index.html'),
+        nested: resolve(__dirname, 'src', 'gif.html'),
+      },
+    },
   },
 };

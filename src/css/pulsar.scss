@@ -277,6 +277,14 @@ pre {
   }
 }
 
+.gif .canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  background-color: black;
+  width: 296px;
+  padding: 20px;
+}
+
 $pixel-size: 7.5%;
 
 .animation-wrapper {
@@ -659,6 +667,25 @@ i.comments > * {
     display: none;
   }
   .share__error-label {
+    display: inline-flex;
+  }
+}
+
+// ----- Record button ----- //
+
+.record:hover svg {
+  color: var(--red);
+}
+
+.record .record__stop-label {
+  display: none;
+}
+
+.is-recording {
+  .record__start-label {
+    display: none;
+  }
+  .record__stop-label {
     display: inline-flex;
   }
 }

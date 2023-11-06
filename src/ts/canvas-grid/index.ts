@@ -3,11 +3,17 @@ import { GridItem, GridType } from '../lib/types';
 import { generateHexGrid } from './hex';
 import { generateTriangleGrid } from './triangles';
 import { generateCirclesGrid } from './circles';
+import {
+  CIRCLE_GRID_SIZE,
+  HEX_GRID_SIZE,
+  TRIANGLE_GRID_SIZE,
+} from './constants';
 
 const gridMap: Record<string, () => GridItem[]> = {
-  classic: () => generateCirclesGrid(6),
-  hex: () => generateHexGrid(5, 6),
-  triangular: () => generateTriangleGrid(8, 5),
+  classic: () => generateCirclesGrid(CIRCLE_GRID_SIZE),
+  hex: () => generateHexGrid(HEX_GRID_SIZE.w, HEX_GRID_SIZE.h),
+  triangular: () =>
+    generateTriangleGrid(TRIANGLE_GRID_SIZE.w, TRIANGLE_GRID_SIZE.h),
 };
 
 export class Grid {

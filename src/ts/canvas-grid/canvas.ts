@@ -2,12 +2,11 @@ import '../../css/pulsar.scss';
 
 import { state } from '../lib/state';
 import { GridItem, Point } from '../lib/types';
-import { CANVAS_SIZE, RADIUS } from './constants';
+import { CANVAS_SIZE, RADIUS, isGif, pixelRatio } from './constants';
 
 const $canvas = document.querySelector('.canvas') as HTMLCanvasElement;
 
-const pixelRatio = window.devicePixelRatio;
-const ctx = $canvas.getContext('2d') as CanvasRenderingContext2D;
+export const ctx = $canvas.getContext('2d') as CanvasRenderingContext2D;
 
 $canvas.width = CANVAS_SIZE * pixelRatio;
 $canvas.height = CANVAS_SIZE * pixelRatio;
@@ -70,6 +69,12 @@ const drawMethods = {
 
 export function drawGrid(grid: GridItem[], data: number[]) {
   ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+
+  if (isGif) {
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+  }
 
   const isScale = state.animate === 'scale' || state.animate === 'both';
   const isOpacity = state.animate === 'opacity' || state.animate === 'both';

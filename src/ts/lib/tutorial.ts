@@ -135,9 +135,7 @@ export class Tutorial {
         code: data.code,
       });
 
-      if (!pulsar.isPlaying) {
-        pulsar.play();
-      }
+      pulsar.play();
     });
   }
 }
