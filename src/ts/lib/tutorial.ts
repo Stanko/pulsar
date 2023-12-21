@@ -99,7 +99,7 @@ const steps: {
     animate: 'scale',
   },
   {
-    text: $introText.innerText,
+    text: $introText.innerHTML,
     code: '',
   },
 ];
