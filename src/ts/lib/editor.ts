@@ -51,7 +51,6 @@ const CODE_MAX_LENGTH = 300;
 // Highlighting code is taken from this Stack Overflow answer:
 // https://stackoverflow.com/a/41885674
 const tokens = {
-  equals: /(\b=\b)/g,
   quotes: /((&#39;.*?&#39;)|(&#34;.*?&#34;)|(".*?(?<!\\)")|('.*?(?<!\\)')|`)/g,
   comments: /((\/\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*+\/)|(\/\/.*))/g,
   logic:
@@ -62,6 +61,7 @@ const tokens = {
   parenthesis: /(\(|\))/g,
   squared: /(\[|\])/g,
   curly: /(\{|\})/g,
+  equals: /(\b\s?=\s?\b)/g,
 };
 
 export const $editor = document.querySelector(
