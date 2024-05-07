@@ -9,7 +9,7 @@ const $canvas = document.querySelector('.canvas') as HTMLCanvasElement;
 export const ctx = $canvas.getContext('2d') as CanvasRenderingContext2D;
 
 $canvas.width = CANVAS_SIZE * pixelRatio;
-$canvas.height = CANVAS_SIZE * pixelRatio;
+$canvas.height = 675 * pixelRatio;
 
 ctx.scale(pixelRatio, pixelRatio);
 

@@ -2,13 +2,13 @@ export const isGif = window.location.pathname.endsWith('gif.html');
 
 export const pixelRatio = isGif ? 1 : devicePixelRatio;
 
-export const CANVAS_SIZE = isGif ? 64 : 400;
+export const CANVAS_SIZE = isGif ? 64 : 1200; //  x 675;
 
-const radiusFactor = isGif ? 0.145 : 0.075;
+const radiusFactor = isGif ? 0.145 : 0.04;
 
 export const RADIUS = CANVAS_SIZE * radiusFactor;
 export const CIRCLE_SCALE = isGif ? 0.8 : 0.88;
-export const CIRCLE_GRID_SIZE = isGif ? 4 : 6;
+export const CIRCLE_GRID_SIZE = isGif ? 4 : 20;
 export const CIRCLE_COLOR_SCALE = isGif ? 1.5 : 1;
 
 export const HEX_RADIUS = isGif ? RADIUS * 0.8 : RADIUS * 0.85;

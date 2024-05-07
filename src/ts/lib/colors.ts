@@ -28,5 +28,5 @@ export function getColor(point: Point, scale: number = 1): string {
     Math.pow(point.x * scale, 2) + Math.pow(point.y * scale, 2)
   );
 
-  return colors[Math.floor(d)] || colors[colors.length - 1];
+  return colors[Math.floor(d) % colors.length];
 }

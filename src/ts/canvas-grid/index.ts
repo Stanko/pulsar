@@ -10,7 +10,7 @@ import {
 } from './constants';
 
 const gridMap: Record<string, () => GridItem[]> = {
-  classic: () => generateCirclesGrid(CIRCLE_GRID_SIZE),
+  classic: () => generateCirclesGrid(CIRCLE_GRID_SIZE, CIRCLE_GRID_SIZE * 0.6),
   hex: () => generateHexGrid(HEX_GRID_SIZE.w, HEX_GRID_SIZE.h),
   triangular: () =>
     generateTriangleGrid(TRIANGLE_GRID_SIZE.w, TRIANGLE_GRID_SIZE.h),
