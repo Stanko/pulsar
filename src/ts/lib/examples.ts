@@ -25,7 +25,7 @@ const examples: Example[] = [
   },
   {
     // Simple pulse
-    code: 'cos(t * 0.5) * 0.5 + 0.5', 
+    code: 'cos(t * 0.5) * 0.5 + 0.5',
     animate: 'opacity',
   },
   {
@@ -68,7 +68,7 @@ const examples: Example[] = [
     code: '(3 / sqrt(((x * 1.5) - 6 * cos(t * 0.5)) ** 2 + ((y * 1.5) - 6 * sin(t * 0.5)) ** 2)) ** 2.5',
     grid: 'hex',
   },
-  /*  
+  /*
   https://news.ycombinator.com/item?id=41478068
 
   // This script recognizes 17 regions and paints each region according to
@@ -110,7 +110,7 @@ const examples: Example[] = [
   )
   */
   {
-    code: '(abs(x)<5)*(1-t%1)**.3*((c,d)=>c&1&~(c+1?268656721+(d<5)*180268851>>d%5*6+c/2:d==2))((y>4)-5*(x>2)+(y>0)-(y<0)+5*(x<-2)-(y<-4)+5,t%10|0)'
+    code: '(abs(x)<5)*(1-t%1)**.3*((c,d)=>c&1&~(c+1?268656721+(d<5)*180268851>>d%5*6+c/2:d==2))((y>4)-5*(x>2)+(y>0)-(y<0)+5*(x<-2)-(y<-4)+5,t%10|0)',
   },
   {
     // Spiral wave
@@ -136,7 +136,7 @@ const examples: Example[] = [
 
     // // Combine wave and falloff, then normalize to 0-1 range
     // return (wave * falloff + 1) / 2;
-    code: '(sin(sqrt(x * x + y * y) + atan2(y, x) * 1 - t) * 1 / (1 + sqrt(x * x + y * y) * 0.2) + 1) / 2'
+    code: '(sin(sqrt(x * x + y * y) + atan2(y, x) * 1 - t) * 1 / (1 + sqrt(x * x + y * y) * 0.2) + 1) / 2',
   },
   {
     // Checkered pulse
@@ -151,8 +151,36 @@ const examples: Example[] = [
   {
     // Christmas tree
     code: 'ceil(((abs(t * 0.7)^2)*7) % 120) === i ? 0 : ((abs(y-6) - abs(x*2.3)) * (cos(t * 0.2) * 0.3 + 0.5))',
-  }
-]
+  },
+  {
+    // Space invader
+    // The array represents pixels of a space invader sprite
+    //
+    // This part moves pixel indexes to the left over time
+    // (i % 13 + floor(t * 0.5)) % 13) + floor(i / 13) * 13
+    //
+    // Unminified it looks like this:
+    //
+    // const shift = floor(t * 0.5) % 13;
+    //
+    // const toXY(i) => {
+    //   return [i % 13, floor(i / 13)];
+    // }
+    //
+    // const toIndex(x, y) => {
+    //   return y * 13 + x;
+    // }
+    //
+    // pixels.map(i => {
+    //   let [x, y] = toXY(i);
+    //   x = (x + shift) % 13; // wrap horizontally only
+    //   return toIndex(x, y);
+    // })
+    //
+    // Rest of the pixels are using noise to emulate a starfield
+    code: '[133,139,121,125,107,108,109,110,111,112,113,93,94,96,97,98,100,101,79,80,81,82,83,84,85,86,87,88,89,66,68,69,70,71,72,73,74,76,53,55,61,63,43,44,47,46].map(i => ((i % 13 + floor(t * 0.5)) % 13) + floor(i / 13) * 13).includes(i) ? 1 : noise(x * t * 0.1, y * t * 0.1) * 0.4 - 0.2',
+  },
+];
 
 export function getRandomExample(): Example {
   return {

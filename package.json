@@ -10,9 +10,9 @@
     "postinstall": "cp ./hooks/pre-commit .git/hooks/pre-commit && chmod +x .git/hooks/pre-commit"
   },
   "devDependencies": {
-    "typescript": "^5.0.2",
-    "vite": "^4.4.5",
-    "sass": "^1.69.3"
+    "typescript": "^5.8.3",
+    "vite": "^7.0.5",
+    "sass": "^1.89.2"
   },
   "dependencies": {
     "gif.js.optimized": "^1.0.1"
